@@ -1,7 +1,7 @@
 # SOEN342 TEAM PROJECT
 
 ## Team Members and roles 
-* Naika Jean-Baptiste
+* Naika Jean-Baptiste (Team Leader)
   - email: jbaptiste.naika@gmail.com
   - github username: naikajb
   - student id: 40227367
