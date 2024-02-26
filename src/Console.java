@@ -95,8 +95,108 @@ public class Console {
         }
 
         return info;
+    }
+    public static void main(String[] args) {
+
+        //flight test
+        City montreal = new City("Montreal", "Canada", -10.0);
+        City newYork = new City("New York", "USA", -11.5);
+
+        City chicago = new City("Chicago", "USA", -10.0);
+
+
+        Airport airportSrc = new Airport("Pierre-Elliot Trudeau", "YUL", montreal);
+        Airport airportDest = new Airport("John-F Kennedy", "JFK", newYork);
+        Airport airportTest = new Airport("O'Hare International Airport", "ORD", chicago);
+
+
+        airportList.add(airportSrc);
+        airportList.add(airportDest);
+        airportList.add(airportTest);
+
+
+        LocalDateTime scheduledDep = LocalDateTime.of(2025, 6, 30, 15, 45);
+        LocalDateTime scheduledDArr = LocalDateTime.of(2025, 6, 30, 17, 15);
+        LocalDateTime actualDep = LocalDateTime.of(2025, 6, 30, 15, 48);
+        LocalDateTime estimatedArr = LocalDateTime.of(2025, 6, 30, 17, 18);
+
+        Aircraft boeing = new Aircraft(1234567890L, Locations.AIRPORT,null);
+
+
+        NonPrivateFlight flight1 = new NonPrivateFlight("DC245", Types.CARGO , airportSrc,airportDest,scheduledDep,scheduledDArr,actualDep,estimatedArr, boeing);
+        flightList.add(flight1);
+
+
+        Actors user;
+
+        boolean valid = false;
+        Scanner scanner = new Scanner(System.in);
+        int userType = 0;
+
+
+        while(valid != true) {
+            System.out.println("Please enter the type of user you are:");
+            System.out.println(
+                    "1. Registered User \n" +
+                    "2. Non-Registered User \n" +
+                    "3. Airport Administrator \n" +
+                    "4. Airline Administrator\n" +
+                    "5. System Administrator \n");
+
+            userType = Integer.parseInt(scanner.nextLine());
+
+            switch (userType) {
+                case 1:
+                    user = new Users(true);
+                    valid = true;
+                    break;
+                case 2:
+                    user = new Users(false);
+                    valid = true;
+                    break;
+                case 3:
+                    System.out.println("Please enter the Airport code of your Airport: ");
+                    String airportCode = scanner.nextLine();
+                    int count = 0;
+                    for(int i=0 ; i < airportList.size() ; i++){
+                        if(airportList.get(i).getCode().equals(airportCode)){
+                            user = new AirportAdministrator(airportList.get(i));
+                            count++;
+                            break;
+                        }
+                    }
+                    if(count==0){
+                        System.out.println("ERROR: The Airport you entered does not exists");
+                    }
+                    valid = true;
+                    break;
+                case 4:
+                    user = new AirlineAdministrator();
+                    valid = true;
+                    break;
+                case 5:
+                    user = new SystemAdministrator();
+                    valid = true;
+                    break;
+                default:
+                    System.out.println("ERROR: Please select a valid user type");
+                    valid = false;
+            }
+
+        }
+
+
+        if(userType==3){
+            if(user.getAirportLocation() == flight1.getSource() || user.getAirportLocation() == flight1.getDestination()){
+                System.out.println(viewPrivateInfo(airportSrc,airportDest));
+            }else{
+                System.out.println("You cannot view the information on this flight since it's source or destination airport does not match with yours");
+            }
+        }else if(userType == 1 || userType == 4 || userType == 5){
+            System.out.println(viewFullInfo(airportSrc,airportDest));
+        }else{
+            System.out.println(viewBasicInfo(airportSrc,airportDest));
+        }
 
     }
-
-
 }
