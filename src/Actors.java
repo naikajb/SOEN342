@@ -1,6 +1,6 @@
 package src;
 
-public class Actors {
+public abstract class Actors {
     protected boolean registered;
 
     public boolean getRegistered(){

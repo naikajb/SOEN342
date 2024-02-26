@@ -2,7 +2,7 @@ package src;
 
 import java.time.LocalDateTime;
 
-public class Flight {
+public abstract class Flight {
     protected String flightNumber;
     protected Airport source;
     protected Airport destination;
