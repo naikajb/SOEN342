@@ -10,13 +10,43 @@ public class Flight {
     protected LocalDateTime scheduledArrival;
     protected LocalDateTime actualDeparture;
     protected LocalDateTime estimatedArrival;
-    protected String type;
     protected Aircraft aircraft;
-    //does it have an airline?
 
-    protected String viewFlightInfo(){
-        return "hello";
+
+
+    public Airport getSource(){
+        return source;
     }
+
+    public Airport getDestination(){
+        return destination;
+    }
+
+    public String getFlightNumber(){
+        return flightNumber;
+    }
+
+    public LocalDateTime getScheduledArrival(){
+        return scheduledArrival;
+    }
+
+    public LocalDateTime getScheduledDeparture(){
+        return scheduledDeparture;
+    }
+
+    public LocalDateTime getActualDeparture(){
+        return actualDeparture;
+    }
+
+    public LocalDateTime getEstimatedArrival(){
+        return estimatedArrival;
+    }
+
+    public Aircraft getAircraft(){
+        return aircraft;
+    }
+
+
 
 }
 

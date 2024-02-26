@@ -11,4 +11,12 @@ public class Airline {
         aircraftList = list;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public ArrayList<Aircraft> getAircraftList(){
+        return aircraftList;
+    }
+
 }

@@ -10,4 +10,16 @@ public class City {
         country = c;
         temperature = temp;
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getCountry(){
+        return country;
+    }
+
+    public Double getTemperature(){
+        return temperature;
+    }
 }

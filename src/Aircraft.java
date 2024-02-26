@@ -1,11 +1,25 @@
 package src;
 
+enum Locations{
+    TRANSIT, AIRPORT;
+}
+
 public class Aircraft {
     private long aircraftID;
-    private String currentLocation;
+    private Airline airline;
+    private Locations location;
 
-    public Aircraft(long id, String loc){
+    public Aircraft(long id, Locations loc, Airline air){
         aircraftID = id;
-        currentLocation = loc;
+        location = loc;
+        airline = air;
+    }
+
+    public long getAircraftID(){
+        return aircraftID;
+    }
+
+    public Airline getAirline(){
+        return airline;
     }
 }
