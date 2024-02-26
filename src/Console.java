@@ -185,8 +185,8 @@ public class Console {
 
         }
 
-
         if(userType==3){
+            user = new AirportAdministrator(airportTest);
             if(user.getAirportLocation() == flight1.getSource() || user.getAirportLocation() == flight1.getDestination()){
                 System.out.println(viewPrivateInfo(airportSrc,airportDest));
             }else{
