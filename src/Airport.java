@@ -11,4 +11,15 @@ public class Airport {
         location = loc;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getAirportCode() {
+        return airportCode;
+    }
+
+    public City getLocation() {
+        return location;
+    }
 }
