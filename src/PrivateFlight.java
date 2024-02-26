@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 
 public class PrivateFlight extends Flight {
     private Airline airline;
+    private final String type;
     public PrivateFlight(
+            String type,
             String num,
             Airport src,
             Airport dest,
@@ -14,8 +16,8 @@ public class PrivateFlight extends Flight {
             LocalDateTime estimatedDep,
             Airline airL,
             Aircraft airC
-    ){ //check type(this.type??)
-        type = "Private";
+    ){
+        this.type = type;
         flightNumber = num;
         source = src;
         destination = dest;

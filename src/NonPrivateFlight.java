@@ -12,8 +12,7 @@ public class NonPrivateFlight extends Flight{
             LocalDateTime actualDep,
             LocalDateTime estimatedDep,
             Aircraft aircr
-    ){ //check type(this.type??)
-        type = "Non-Private";
+    ){
         flightNumber = num;
         source = src;
         destination = dest;
