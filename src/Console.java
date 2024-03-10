@@ -96,6 +96,7 @@ public class Console {
 
         return info;
     }
+
     public static void main(String[] args) {
 
         //flight test
@@ -134,7 +135,7 @@ public class Console {
         int userType = 0;
 
 
-        while(valid != true) {
+        while(!valid) {
             System.out.println("Please enter the type of user you are:");
             System.out.println(
                     "1. Registered User \n" +
@@ -160,7 +161,7 @@ public class Console {
                     int count = 0;
                     for(int i=0 ; i < airportList.size() ; i++){
                         if(airportList.get(i).getCode().equals(airportCode)){
-                            user = new AirportAdministrator(airportList.get(i));
+                            user = new AirportAdministrator(airportList.get(i), "aiportadmin1", "123" );
                             count++;
                             break;
                         }
@@ -171,11 +172,11 @@ public class Console {
                     valid = true;
                     break;
                 case 4:
-                    user = new AirlineAdministrator();
+                    user = new AirlineAdministrator("airlineadmin1", "123", null );
                     valid = true;
                     break;
                 case 5:
-                    user = new SystemAdministrator();
+                    user = new SystemAdministrator("systemadmin1", "123" );
                     valid = true;
                     break;
                 default:
@@ -186,7 +187,7 @@ public class Console {
         }
 
         if(userType==3){
-            user = new AirportAdministrator(airportTest);
+            user = new AirportAdministrator(airportTest, "admin2", "123");
             if(user.getAirportLocation() == flight1.getSource() || user.getAirportLocation() == flight1.getDestination()){
                 System.out.println(viewPrivateInfo(airportSrc,airportDest));
             }else{
