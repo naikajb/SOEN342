@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class PrivateFlight extends Flight {
     private Airline airline;
-
+    //TODO: generate the flight number w/ format "AC-365"
     public PrivateFlight(
             String num,
             Airport src,
