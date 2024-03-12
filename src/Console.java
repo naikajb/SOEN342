@@ -106,13 +106,13 @@ public class Console {
         City chicago = new City("Chicago", "USA", -10.0);
 
 
-        Airport airportSrc = new Airport("Pierre-Elliot Trudeau", "YUL", montreal);
-        Airport airportDest = new Airport("John-F Kennedy", "JFK", newYork);
+        Airport airport1 = new Airport("Pierre-Elliot Trudeau", "YUL", montreal);
+        Airport airport2 = new Airport("John-F Kennedy", "JFK", newYork);
         Airport airportTest = new Airport("O'Hare International Airport", "ORD", chicago);
 
 
-        airportList.add(airportSrc);
-        airportList.add(airportDest);
+        airportList.add(airport1);
+        airportList.add(airport2);
         airportList.add(airportTest);
 
 
@@ -124,11 +124,11 @@ public class Console {
         Aircraft boeing = new Aircraft(1234567890L, Locations.AIRPORT,null);
 
 
-        NonPrivateFlight flight1 = new NonPrivateFlight("DC245", Types.CARGO , airportSrc,airportDest,scheduledDep,scheduledDArr,actualDep,estimatedArr, boeing);
+        NonPrivateFlight flight1 = new NonPrivateFlight("DC245", Types.CARGO , airport1,airport2,scheduledDep,scheduledDArr,actualDep,estimatedArr, boeing);
         flightList.add(flight1);
 
 
-        Actors user;
+        Actors user = null;
 
         boolean valid = false;
         Scanner scanner = new Scanner(System.in);
@@ -186,17 +186,34 @@ public class Console {
 
         }
 
+        Airport source = null;
+        Airport destination = null;
+
+        System.out.println("Please enter the source airport of the flight you'd like to view");
+        String src = scanner.nextLine();
+        System.out.println("Please enter the destination airport of the flight you'd like to view");
+        String dest = scanner.nextLine();
+
+        for(int i=0;i< airportList.size();i++){
+            if(airportList.get(i).getCode().equals(src)){
+                source = airportList.get(i);
+            }else if(airportList.get(i).getCode().equals(dest)){
+                destination = airportList.get(i);
+            }
+        }
+
+
         if(userType==3){
-            user = new AirportAdministrator(airportTest, "admin2", "123");
-            if(user.getAirportLocation() == flight1.getSource() || user.getAirportLocation() == flight1.getDestination()){
-                System.out.println(viewPrivateInfo(airportSrc,airportDest));
+//            user = new AirportAdministrator(airportTest, "admin2", "123");
+            if(user.getAirportLocation().getCode().equals(src) || user.getAirportLocation().getCode().equals(dest)){
+                System.out.println(viewPrivateInfo(source,destination));
             }else{
                 System.out.println("You cannot view the information on this flight since it's source or destination airport does not match with yours");
             }
         }else if(userType == 1 || userType == 4 || userType == 5){
-            System.out.println(viewFullInfo(airportSrc,airportDest));
+            System.out.println(viewFullInfo(source,destination));
         }else{
-            System.out.println(viewBasicInfo(airportSrc,airportDest));
+            System.out.println(viewBasicInfo(source,destination));
         }
 
     }
