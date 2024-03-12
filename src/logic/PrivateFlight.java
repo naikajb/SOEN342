@@ -1,7 +1,6 @@
-package src;
+package src.logic;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class PrivateFlight extends Flight {
     private Airline airline;

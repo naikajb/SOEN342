@@ -1,4 +1,4 @@
-package src;
+package src.logic;
 
 public abstract class Actors {
     protected boolean registered;

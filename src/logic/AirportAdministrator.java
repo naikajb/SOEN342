@@ -1,4 +1,4 @@
-package src;
+package src.logic;
 
 public class AirportAdministrator extends Administrators{
     private final Airport location;

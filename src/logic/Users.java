@@ -1,4 +1,4 @@
-package src;
+package src.logic;
 
 public class Users extends Actors {
     public Users(boolean reg) {
@@ -10,5 +10,6 @@ public class Users extends Actors {
         this.username = username;
         this.password = password;
     }
+
 
 }

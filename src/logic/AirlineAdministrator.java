@@ -1,4 +1,4 @@
-package src;
+package src.logic;
 
 public class AirlineAdministrator extends Administrators{
     private String username;

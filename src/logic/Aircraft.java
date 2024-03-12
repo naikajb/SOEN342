@@ -1,4 +1,4 @@
-package src;
+package src.logic;
 
 enum Locations{
     TRANSIT, AIRPORT;
@@ -21,5 +21,9 @@ public class Aircraft {
 
     public Airline getAirline(){
         return airline;
+    }
+
+    public boolean checkAircraftAvailability(){
+       return location == Locations.AIRPORT;
     }
 }

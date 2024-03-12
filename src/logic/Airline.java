@@ -1,4 +1,4 @@
-package src;
+package src.logic;
 
 import java.util.ArrayList;
 
@@ -17,6 +17,10 @@ public class Airline {
 
     public ArrayList<Aircraft> getAircraftList(){
         return aircraftList;
+    }
+
+    public boolean checkAircraftAvailability(){
+        return false;
     }
 
 }

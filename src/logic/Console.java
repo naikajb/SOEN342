@@ -1,4 +1,6 @@
-package src;
+package src.logic;
+
+import src.dataSource.DataGateway;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -6,8 +8,13 @@ import java.util.Scanner;
 
 public class Console {
 
+    static DataGateway dataAccess;
+    static Scanner scanner = new Scanner(System.in);
+    public static ArrayList<Actors> accounts = new ArrayList<>();
+
     private static ArrayList<Flight> flightList = new ArrayList<Flight>();
     private static ArrayList<Airport> airportList = new ArrayList<Airport>();
+    private static  ArrayList<Airline> airlinesList = new ArrayList<>();
 
     public static String viewBasicInfo(Airport source, Airport destination){
         ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
@@ -97,12 +104,15 @@ public class Console {
         return info;
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args)  {
+//        try {
+//            dataAccess = new DataGateway();
+//        }catch (SQLException e){
+//            System.out.println(e.getMessage());
+//        }
         //flight test
         City montreal = new City("Montreal", "Canada", -10.0);
         City newYork = new City("New York", "USA", -11.5);
-
         City chicago = new City("Chicago", "USA", -10.0);
 
 
@@ -123,6 +133,8 @@ public class Console {
 
         Aircraft boeing = new Aircraft(1234567890L, Locations.AIRPORT,null);
 
+        Airline airlineTest = new Airline("Air Canada", (new ArrayList<Aircraft>()));
+        airlineTest.getAircraftList().add(boeing);
 
         NonPrivateFlight flight1 = new NonPrivateFlight("DC245", Types.CARGO , airport1,airport2,scheduledDep,scheduledDArr,actualDep,estimatedArr, boeing);
         flightList.add(flight1);
@@ -131,7 +143,6 @@ public class Console {
         Actors user = null;
 
         boolean valid = false;
-        Scanner scanner = new Scanner(System.in);
         int userType = 0;
 
 
@@ -156,20 +167,34 @@ public class Console {
                     valid = true;
                     break;
                 case 3:
-                    System.out.println("Please enter the Airport code of your Airport: ");
-                    String airportCode = scanner.nextLine();
-                    int count = 0;
-                    for(int i=0 ; i < airportList.size() ; i++){
-                        if(airportList.get(i).getCode().equals(airportCode)){
-                            user = new AirportAdministrator(airportList.get(i), "aiportadmin1", "123" );
-                            count++;
-                            break;
+                    //airport administrators have two operations they can do in console
+                    System.out.println("Which operation do you want to perform: " +
+                            "\n1. View Flight Informations" +
+                            "\n2. Register a New Flight");
+                    int choice;
+                    do {
+                        choice = scanner.nextInt();
+                        //view flight info
+                        if (choice == 1) {
+                            System.out.println("Please enter the Airport code of your Airport: ");
+                            String airportCode = scanner.nextLine();
+                            int count = 0;
+                            for (int i = 0; i < airportList.size(); i++) {
+                                if (airportList.get(i).getCode().equals(airportCode)) {
+                                    user = new AirportAdministrator(airportList.get(i), "aiportadmin1", "123");
+                                    count++;
+                                    break;
+                                }
+                            }
+                            if (count == 0) {
+                                System.out.println("ERROR: The Airport you entered does not exists");
+                            }
+                            valid = true;
+                        }//register a new flight into the database
+                        else if (choice == 2) {
+                            registerFlight();
                         }
-                    }
-                    if(count==0){
-                        System.out.println("ERROR: The Airport you entered does not exists");
-                    }
-                    valid = true;
+                    }while (choice > 2 || choice < 1);
                     break;
                 case 4:
                     user = new AirlineAdministrator("airlineadmin1", "123", null );
@@ -201,9 +226,7 @@ public class Console {
                 destination = airportList.get(i);
             }
         }
-
-
-        if(userType==3){
+                if(userType==3){
 //            user = new AirportAdministrator(airportTest, "admin2", "123");
             if(user.getAirportLocation().getCode().equals(src) || user.getAirportLocation().getCode().equals(dest)){
                 System.out.println(viewPrivateInfo(source,destination));
@@ -215,6 +238,27 @@ public class Console {
         }else{
             System.out.println(viewBasicInfo(source,destination));
         }
+    }
 
+    private static void registerFlight() {
+
+        System.out.println("Please enter the Airport code of your Airport: ");
+        String airportCode = scanner.nextLine();
+
+        //look through list of airports to find the right one
+        //TODO chnage to database access
+        for(int i = 0; i < airportList.size(); i++){
+            if (airportList.get(i).getCode().equals(airportCode)){
+                //once found, check if this airport has any available aircrafts
+                airportList.get(i).checkAvailableAircraft();
+            }
+        }
+
+    }
+
+
+    private static void generateAccounts() {
+        accounts.add(new Users( "naika", "123"));
+        accounts.add(new Users("asmae", "123"));
     }
 }
