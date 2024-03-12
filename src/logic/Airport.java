@@ -8,6 +8,7 @@ public class Airport {
     private String airportCode;
     private City location;
     private ArrayList<PrivateFlight> privateFlights;
+    private ArrayList<Aircraft> currentAircrafts;
 
     public Airport(String n, String code, City loc){
         name = n;
@@ -35,9 +36,23 @@ public class Airport {
         privateFlights.add(flight);
     }
 
-    public void checkAvailableAircraft() {
-        for(int i = 0; i < privateFlights.size(); i ++){
-           // if (privateFlights.get(i))
+    public void addAircraft(Aircraft craft){
+        if (currentAircrafts == null){
+            currentAircrafts = new ArrayList<>();
+        }
+
+        currentAircrafts.add(craft);
+    }
+
+    public void removeAircraft(Aircraft craft){
+        currentAircrafts.remove(craft);
+    }
+
+    public Aircraft checkAvailableAircraft() {
+        if (!currentAircrafts.isEmpty()){
+            return currentAircrafts.remove(0);
+        }else{
+            return null;
         }
     }
 }
