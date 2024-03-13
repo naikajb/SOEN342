@@ -1,4 +1,4 @@
-package h2Example;
+package h2Connections;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class H2ServerModeExample {
+public class H2ServerModeQuery {
 
 	public static void main(String[] args) {
 		String jdbcURL = "jdbc:h2:tcp://localhost/~/test";
