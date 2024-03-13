@@ -55,5 +55,9 @@ public class Airport {
             return null;
         }
     }
+
+    public ArrayList<PrivateFlight> getListOfFlights(){
+        return privateFlights;
+    }
 }
 

@@ -24,6 +24,9 @@ public class Aircraft {
         return airline;
     }
 
+    public Locations getLocation() {
+        return location;
+    }
 
     public boolean setAirportCode(String airportCode){
         //check first that aircraft is not in transit
