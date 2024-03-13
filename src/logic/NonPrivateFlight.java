@@ -13,7 +13,6 @@ public class NonPrivateFlight extends Flight{
 
     //TODO: generate the flight number w/ format "AC-365"
     public NonPrivateFlight(
-            String num,
             Types t,
             Airport src,
             Airport dest,
@@ -31,6 +30,7 @@ public class NonPrivateFlight extends Flight{
         actualDeparture = actualDep;
         estimatedArrival = estimatedDep;
         aircraft = airC;
+        super.flightNumber = super.assignRandomNumber();
     }
 
 
