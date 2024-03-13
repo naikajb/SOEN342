@@ -269,7 +269,7 @@ public class Console {
     }
 
 
-    private static boolean registerNonPrivateFlight(String airlineName){
+    private static boolean registerNonPrivateFlight(String airportCode){
         Aircraft availableAircraft = null;
         Airport currentAirport = null;
 
@@ -291,8 +291,57 @@ public class Console {
         if(availableAircraft == null){
             System.out.println("Unable to register a new flight since no aircrafts are currently available.");
             return false;
-        } else {}
-        return false;
+        } else {
+            boolean alreaydExists = false;// used to hold T/F if the time for departure/arrival already exists
+            LocalDateTime dateTime = null;
+
+            System.out.print("Enter a date and time of departure for this flight: (yyyy-MM-dd-HH-mm-ss): ");
+            StringTokenizer timeInput = new StringTokenizer(scanner.next(),"-");
+            dateTime = convertToLocalDateTime(timeInput);
+
+            //get the flights that are departing from this airport
+            ArrayList<PrivateFlight> existingFlights = currentAirport.getListOfFlights();
+
+            //check if any flights are departing at the same time
+            for(int i = 0; i < existingFlights.size(); i++){
+                if(existingFlights.get(i).getScheduledDeparture() == dateTime){
+                    alreaydExists = true;
+                    break;
+                }
+            }
+
+            if(alreaydExists){
+                System.out.println("Cannot register this flight because a flight is already departing or landing at the same time.");
+                return false;
+            }
+
+
+            //if for loop wasn't broken then all the flights were fine
+            //check for arrival time and airport
+            System.out.print("Enter the destination airport code of this flight: ");
+            String destCode = scanner.next();
+            LocalDateTime arrDateTime = null;
+
+            Airport destAirport = findAirport(destCode);
+            if(destAirport != null){
+                System.out.print("Enter the arrival time for this flight: ");
+                arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
+                //check  for a flight with same destination AND arrival time
+                for(int i = 0; i < flightList.size(); i++){
+                    if (flightList.get(i).getDestination().equals(destAirport) && flightList.get(i).getScheduledArrival().equals(dateTime)){
+                        System.out.print("Cannot register this flight because a flight is already landing at the same airport at this time.");
+                        return false;
+                    }
+                }
+                //none were found so we can create flight and register it
+                PrivateFlight newFlight = new PrivateFlight(currentAirport,destAirport,dateTime,arrDateTime,null,null,availableAircraft);
+                flightList.add(newFlight);
+                return true;
+            }else{
+                System.out.print("Cannot register this flight because no airport exists with this code.");
+                return false;
+            }
+        }
     }
     private static boolean registerPrivateFlight(String airportCode) {
         Aircraft availableAircraft = null;
