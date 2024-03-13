@@ -270,6 +270,28 @@ public class Console {
 
 
     private static boolean registerNonPrivateFlight(String airlineName){
+        Aircraft availableAircraft = null;
+        Airport currentAirport = null;
+
+        //look through list of airports to find the right one
+        //TODO change to database access
+        for(int i = 0; i < airportList.size(); i++){
+            if (airportList.get(i).getCode().equals(airportCode)){
+                currentAirport = airportList.get(i);
+                //once found, check if this airport has any available aircrafts
+                availableAircraft = airportList.get(i).checkAvailableAircraft();
+                //if an aircraft is found we can continue with the flight registration no need to keep looping
+                if (availableAircraft != null){
+                    break;
+                }
+            }
+        }
+
+       // don't continue if no aircraft was found
+        if(availableAircraft == null){
+            System.out.println("Unable to register a new flight since no aircrafts are currently available.");
+            return false;
+        } else {}
         return false;
     }
     private static boolean registerPrivateFlight(String airportCode) {
