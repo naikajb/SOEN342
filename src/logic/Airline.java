@@ -19,9 +19,17 @@ public class Airline {
         return aircraftList;
     }
 
-    public boolean checkAircraftAvailability(){
-
-        return false;
+    public Aircraft checkAircraftAvailability(){
+        if (aircraftList == null){
+            return null;
+        }else{
+            for(int i = 0; i < aircraftList.size(); i++){
+                if(aircraftList.get(i).checkAircraftAvailability()){
+                    return aircraftList.get(i);
+                }
+            }
+            return null;
+        }
     }
 
 }

@@ -136,7 +136,7 @@ public class Console {
         Airline airlineTest = new Airline("Air Canada", (new ArrayList<Aircraft>()));
         airlineTest.getAircraftList().add(boeing);
 
-        NonPrivateFlight flight1 = new NonPrivateFlight("DC245", Types.CARGO , airport1,airport2,scheduledDep,scheduledDArr,actualDep,estimatedArr, boeing);
+        NonPrivateFlight flight1 = new NonPrivateFlight( Types.CARGO , airport1,airport2,scheduledDep,scheduledDArr,actualDep,estimatedArr, boeing);
         flightList.add(flight1);
 
 
