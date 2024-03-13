@@ -168,16 +168,15 @@ public class Console {
                     break;
                 case 3:
                     //airport administrators have two operations they can do in console
-                    System.out.println("Which operation do you want to perform: " +
-                            "\n1. View Flight Informations" +
-                            "\n2. Register a New Flight");
+                    displayAdminOperations();
                     int choice;
                     do {
                         choice = scanner.nextInt();
+                        System.out.println("Please enter the Airport code of your Airport: ");
+                        String airportCode = scanner.nextLine();
                         //view flight info
                         if (choice == 1) {
-                            System.out.println("Please enter the Airport code of your Airport: ");
-                            String airportCode = scanner.nextLine();
+
                             int count = 0;
                             for (int i = 0; i < airportList.size(); i++) {
                                 if (airportList.get(i).getCode().equals(airportCode)) {
@@ -192,12 +191,23 @@ public class Console {
                             valid = true;
                         }//register a new flight into the database
                         else if (choice == 2) {
-                            registerFlight();
+                            registerFlight(airportCode);
                         }
                     }while (choice > 2 || choice < 1);
                     break;
                 case 4:
                     user = new AirlineAdministrator("airlineadmin1", "123", null );
+                    displayAdminOperations();
+                    choice = scanner.nextInt();
+                    if (choice == 2) {
+                        System.out.print("Enter the name of your airline as \"Airline-Name\": ");
+                        boolean success = registerNonPrivateFlight(scanner.next());
+                        if (success){
+                            System.out.println("New flight was successfully added.");
+                        }else{
+                            System.out.println("Flight was not added. See above error.");
+                        }
+                    }
                     valid = true;
                     break;
                 case 5:
@@ -240,10 +250,11 @@ public class Console {
         }
     }
 
-    private static void registerFlight() {
+    private static boolean registerNonPrivateFlight(String airlineName){
+        return false;
+    }
+    private static boolean registerFlight(String airportCode) {
 
-        System.out.println("Please enter the Airport code of your Airport: ");
-        String airportCode = scanner.nextLine();
         Aircraft availableAircraft = null;
 
         //look through list of airports to find the right one
@@ -267,8 +278,14 @@ public class Console {
 
         }
 
+        return false;
     }
 
+    private static void displayAdminOperations(){
+        System.out.println("Which operation do you want to perform: " +
+                "\n1. View Flight Informations" +
+                "\n2. Register a New Flight");
+    }
 
     private static void generateAccounts() {
         accounts.add(new Users( "naika", "123"));
