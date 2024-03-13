@@ -244,14 +244,27 @@ public class Console {
 
         System.out.println("Please enter the Airport code of your Airport: ");
         String airportCode = scanner.nextLine();
+        Aircraft availableAircraft = null;
 
         //look through list of airports to find the right one
-        //TODO chnage to database access
+        //TODO change to database access
         for(int i = 0; i < airportList.size(); i++){
             if (airportList.get(i).getCode().equals(airportCode)){
                 //once found, check if this airport has any available aircrafts
-                airportList.get(i).checkAvailableAircraft();
+                availableAircraft = airportList.get(i).checkAvailableAircraft();
+                //if an aircraft is found we can continue with the flight registration no need to keep looping
+                if (availableAircraft != null){
+                    break;
+                }
             }
+        }
+
+        //don't continue if no aircraft was found
+        if(availableAircraft == null){
+            System.out.println("Unable to register a new flight since no aircrafts are currently available.");
+        }else{
+            System.out.print("Enter flight number: ");
+
         }
 
     }

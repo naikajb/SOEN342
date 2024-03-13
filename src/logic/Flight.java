@@ -1,6 +1,7 @@
 package src.logic;
 
 import java.time.LocalDateTime;
+import java.util.Random;
 
 public abstract class Flight {
     protected String flightNumber;
@@ -44,6 +45,21 @@ public abstract class Flight {
 
     public Aircraft getAircraft(){
         return aircraft;
+    }
+
+    String assignRandomNumber(){
+        Random rnd = new Random();
+        StringBuilder code = new StringBuilder();
+        if (rnd.nextInt() % 2 == 0){
+            code.append("AA");
+        }else{
+            code.append("BB");
+        }
+        code.append('-');
+        for(int i = 0; i < 3; i++){
+            code.append((char) rnd.nextInt());
+        }
+        return code.toString();
     }
 
 

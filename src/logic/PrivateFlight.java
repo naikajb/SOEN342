@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 
 public class PrivateFlight extends Flight {
     private Airline airline;
-
+    //TODO: generate the flight number w/ format "AC-365"
     public PrivateFlight(
-            String num,
             Airport src,
             Airport dest,
             LocalDateTime scheduledDep,
@@ -15,7 +14,6 @@ public class PrivateFlight extends Flight {
             LocalDateTime estimatedDep,
             Aircraft airC
     ){ //check type(this.type??)
-        flightNumber = num;
         source = src;
         destination = dest;
         scheduledArrival = scheduledArr;
@@ -24,7 +22,11 @@ public class PrivateFlight extends Flight {
         estimatedArrival = estimatedDep;
         aircraft = airC;
 
+        flightNumber = assignRandomNumber();
+
     }
+
+
 
 
 }
