@@ -12,7 +12,11 @@
     <description>Airplane Software System - GroupProject</description>
 
     <dependencies>
-        <!-- Add your dependencies here -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.45.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>
