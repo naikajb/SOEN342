@@ -1,15 +1,16 @@
 package logic;
 
-import dataSource.DataGateway;
-
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import dataSource.DatabaseConnector;
+
 public class Console {
 
-    static DataGateway dataAccess;
     static Scanner scanner = new Scanner(System.in);
     public static ArrayList<Actors> accounts = new ArrayList<>();
 
@@ -109,11 +110,9 @@ public class Console {
     }
 
     public static void main(String[] args) {
-        // try {
-        // dataAccess = new DataGateway();
-        // }catch (SQLException e){
-        // System.out.println(e.getMessage());
-        // }
+        // Establish a connection to the database
+        Connection conn = DatabaseConnector.connect();
+
         // flight test
         City montreal = new City("Montreal", "Canada", -10.0);
         City newYork = new City("New York", "USA", -11.5);
@@ -248,6 +247,15 @@ public class Console {
             System.out.println(viewFullInfo(source, destination));
         } else {
             System.out.println(viewBasicInfo(source, destination));
+        }
+
+        // Remember to close the connection when done
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
