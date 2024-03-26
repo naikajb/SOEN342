@@ -1,6 +1,6 @@
 package logic;
 
-import src.dataSource.DataGateway;
+import dataSource.DataGateway;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
