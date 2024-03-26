@@ -1,10 +1,11 @@
-package src.logic;
+package logic;
 
 import java.time.LocalDateTime;
 
 public class PrivateFlight extends Flight {
     private Airline airline;
-    //TODO: generate the flight number w/ format "AC-365"
+
+    // TODO: generate the flight number w/ format "AC-365"
     public PrivateFlight(
             Airport src,
             Airport dest,
@@ -12,8 +13,7 @@ public class PrivateFlight extends Flight {
             LocalDateTime scheduledArr,
             LocalDateTime actualDep,
             LocalDateTime estimatedDep,
-            Aircraft airC
-    ){ //check type(this.type??)
+            Aircraft airC) { // check type(this.type??)
         source = src;
         destination = dest;
         scheduledArrival = scheduledArr;
@@ -25,8 +25,5 @@ public class PrivateFlight extends Flight {
         flightNumber = assignRandomNumber();
 
     }
-
-
-
 
 }

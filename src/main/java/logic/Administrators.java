@@ -1,4 +1,4 @@
-package src.logic;
+package logic;
 
 public class Administrators extends Actors {
     public Administrators() {

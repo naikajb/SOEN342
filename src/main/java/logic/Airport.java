@@ -1,4 +1,4 @@
-package src.logic;
+package logic;
 
 import java.util.ArrayList;
 
@@ -10,54 +10,53 @@ public class Airport {
     private ArrayList<PrivateFlight> privateFlights;
     private ArrayList<Aircraft> currentAircrafts;
 
-    public Airport(String n, String code, City loc){
+    public Airport(String n, String code, City loc) {
         name = n;
         airportCode = code;
         location = loc;
         privateFlights = null;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getCode(){
+    public String getCode() {
         return airportCode;
     }
 
-    public City getLocation(){
+    public City getLocation() {
         return location;
     }
 
-    public void addPrivateFlight(PrivateFlight flight){
-        if(privateFlights == null) {
+    public void addPrivateFlight(PrivateFlight flight) {
+        if (privateFlights == null) {
             privateFlights = new ArrayList<>();
         }
         privateFlights.add(flight);
     }
 
-    public void addAircraft(Aircraft craft){
-        if (currentAircrafts == null){
+    public void addAircraft(Aircraft craft) {
+        if (currentAircrafts == null) {
             currentAircrafts = new ArrayList<>();
         }
 
         currentAircrafts.add(craft);
     }
 
-    public void removeAircraft(Aircraft craft){
+    public void removeAircraft(Aircraft craft) {
         currentAircrafts.remove(craft);
     }
 
     public Aircraft checkAvailableAircraft() {
-        if (!currentAircrafts.isEmpty()){
+        if (!currentAircrafts.isEmpty()) {
             return currentAircrafts.remove(0);
-        }else{
+        } else {
             return null;
         }
     }
 
-    public ArrayList<PrivateFlight> getListOfFlights(){
+    public ArrayList<PrivateFlight> getListOfFlights() {
         return privateFlights;
     }
 }
-

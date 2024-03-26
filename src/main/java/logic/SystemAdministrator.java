@@ -1,6 +1,6 @@
-package src.logic;
+package logic;
 
-public class SystemAdministrator extends Administrators{
+public class SystemAdministrator extends Administrators {
 
     public SystemAdministrator(String username, String password) {
         super();

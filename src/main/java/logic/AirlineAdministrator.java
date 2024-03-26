@@ -1,6 +1,6 @@
-package src.logic;
+package logic;
 
-public class AirlineAdministrator extends Administrators{
+public class AirlineAdministrator extends Administrators {
     private String username;
     private String password;
     private Airline airline;
