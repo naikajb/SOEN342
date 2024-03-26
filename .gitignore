@@ -1,1 +1,26 @@
-/target/
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IDE-specific ###
+.idea
+*.iml
+*.class
+*.log
+.vscode/
+*.swp
+*~
+.DS_Store
+
+### OS-specific ###
+Thumbs.db
+db/
+
+### Maven ###
+mvnw
+mvnw.cmd
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
