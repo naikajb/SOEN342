@@ -1,4 +1,4 @@
-package src.main.java.logic;
+package logic;
 
 public class City {
     String name;

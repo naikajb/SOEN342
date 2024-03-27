@@ -1,4 +1,4 @@
-package src.main.java.logic;
+package logic;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -155,16 +155,16 @@ public class Console {
             System.out.println("Please enter your password: ");
             String password = scanner.nextLine();
 
-            //TODO: db code to fetch the user
+            // TODO: db code to fetch the user
 
-            String type = ""; //depending on the type of user, different actions can be done
+            String type = ""; // depending on the type of user, different actions can be done
             boolean validChoice = false;
-            int choice = 0; //type of action the user wants to do
+            int choice = 0; // type of action the user wants to do
 
             if (username.equals("") && password.equals("")) {
                 type += "Non-registered";
             } else {
-                //TODO:set the type depending on the username + password in the database
+                // TODO:set the type depending on the username + password in the database
             }
 
             switch (type) {
@@ -177,18 +177,19 @@ public class Console {
 
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
                             String sourceCode = scanner.nextLine();
-                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            System.out
+                                    .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.nextLine();
 
-                            //TODO:find airports in database from the srcCode and destCode
-                            //TODO:call correct viewFlightInfo from found airports
+                            // TODO:find airports in database from the srcCode and destCode
+                            // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
 
                         } else if (choice == 2) {
 
-                            //TODO:get user airportCode from database
-                            //TODO:call registerPrivateFlight(airportCode);
+                            // TODO:get user airportCode from database
+                            // TODO:call registerPrivateFlight(airportCode);
 
                             validChoice = true;
 
@@ -208,12 +209,13 @@ public class Console {
                         if (choice == 1) {
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
                             String sourceCode = scanner.nextLine();
-                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            System.out
+                                    .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.nextLine();
                             System.out.println("dfhvbjd");
 
-                            //TODO:find airports in database from the srcCode and destCode
-                            //TODO:call correct viewFlightInfo from found airports
+                            // TODO:find airports in database from the srcCode and destCode
+                            // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
 
@@ -248,17 +250,18 @@ public class Console {
 
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
                             String sourceCode = scanner.nextLine();
-                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            System.out
+                                    .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.nextLine();
 
-                            //TODO:find airports in database from the srcCode and destCode
-                            //TODO:call correct viewFlightInfo from found airports
+                            // TODO:find airports in database from the srcCode and destCode
+                            // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
 
                         } else if (choice == 2) {
 
-                            //TODO:create enter record on airport method
+                            // TODO:create enter record on airport method
                             validChoice = true;
 
                         } else {
@@ -279,12 +282,12 @@ public class Console {
 
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
                             String sourceCode = scanner.nextLine();
-                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            System.out
+                                    .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.nextLine();
 
-                            //TODO:find airports in database from the srcCode and destCode
-                            //TODO:call correct viewFlightInfo from found airports
-
+                            // TODO:find airports in database from the srcCode and destCode
+                            // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
 
@@ -307,11 +310,12 @@ public class Console {
 
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
                             String sourceCode = scanner.nextLine();
-                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            System.out
+                                    .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.nextLine();
 
-                            //TODO:find airports in database from the srcCode and destCode
-                            //TODO:call correct viewFlightInfo from found airports
+                            // TODO:find airports in database from the srcCode and destCode
+                            // TODO:call correct viewFlightInfo from found airports
 
                             System.out.println("fhsdvhjd");
                             validChoice = true;
@@ -329,119 +333,123 @@ public class Console {
         }
     }
 
-//        while (!valid) {
-//            System.out.println("Please enter the type of user you are:");
-//            System.out.println(
-//                    "1. Registered User \n" +
-//                            "2. Non-Registered User \n" +
-//                            "3. Airport Administrator \n" +
-//                            "4. Airline Administrator\n" +
-//                            "5. System Administrator \n");
-//
-//            userType = Integer.parseInt(scanner.nextLine());
-//
-//            switch (userType) {
-//                case 1:
-//                    user = new Users(true);
-//                    valid = true;
-//                    break;
-//                case 2:
-//                    user = new Users(false);
-//                    valid = true;
-//                    break;
-//                case 3:
-//                    // airport administrators have two operations they can do in console
-//                    displayAdminOperations();
-//                    int choice;
-//                    do {
-//                        choice = scanner.nextInt();
-//                        System.out.println("Please enter the Airport code of your Airport: ");
-//                        String airportCode = scanner.nextLine();
-//                        // view flight info
-//                        if (choice == 1) {
-//
-//                            int count = 0;
-//                            for (int i = 0; i < airportList.size(); i++) {
-//                                if (airportList.get(i).getCode().equals(airportCode)) {
-//                                    user = new AirportAdministrator(airportList.get(i), "aiportadmin1", "123");
-//                                    count++;
-//                                    break;
-//                                }
-//                            }
-//                            if (count == 0) {
-//                                System.out.println("ERROR: The Airport you entered does not exists");
-//                            }
-//                            valid = true;
-//                        } // register a new flight into the database
-//                        else if (choice == 2) {
-//                            registerPrivateFlight(airportCode);
-//                        }
-//                    } while (choice > 2 || choice < 1);
-//                    break;
-//                case 4:
-//                    user = new AirlineAdministrator("airlineadmin1", "123", null);
-//                    displayAdminOperations();
-//                    choice = scanner.nextInt();
-//                    if (choice == 2) {
-//                        System.out.print("Enter the name of your airline as \"Airline-Name\": ");
-//                        boolean success = registerNonPrivateFlight(scanner.next());
-//                        if (success) {
-//                            System.out.println("New flight was successfully added.");
-//                        } else {
-//                            System.out.println("Flight was not added. See above error.");
-//                        }
-//                    }
-//                    valid = true;
-//                    break;
-//                case 5:
-//                    user = new SystemAdministrator("systemadmin1", "123");
-//                    valid = true;
-//                    break;
-//                default:
-//                    System.out.println("ERROR: Please select a valid user type");
-//                    valid = false;
-//            }
-//
-//        }
-//
-//        Airport source = null;
-//        Airport destination = null;
-//
-//        System.out.println("Please enter the source airport of the flight you'd like to view");
-//        String src = scanner.nextLine();
-//        System.out.println("Please enter the destination airport of the flight you'd like to view");
-//        String dest = scanner.nextLine();
-//
-//        for (int i = 0; i < airportList.size(); i++) {
-//            if (airportList.get(i).getCode().equals(src)) {
-//                source = airportList.get(i);
-//            } else if (airportList.get(i).getCode().equals(dest)) {
-//                destination = airportList.get(i);
-//            }
-//        }
-//        if (userType == 3) {
-//            // user = new AirportAdministrator(airportTest, "admin2", "123");
-//            if (user.getAirportLocation().getCode().equals(src) || user.getAirportLocation().getCode().equals(dest)) {
-//                System.out.println(viewPrivateInfo(source, destination));
-//            } else {
-//                System.out.println(
-//                        "You cannot view the information on this flight since it's source or destination airport does not match with yours");
-//            }
-//        } else if (userType == 1 || userType == 4 || userType == 5) {
-//            System.out.println(viewFullInfo(source, destination));
-//        } else {
-//            System.out.println(viewBasicInfo(source, destination));
-//        }
-//
-//        // Remember to close the connection when done
-//        if (conn != null) {
-//            try {
-//                conn.close();
-//            } catch (SQLException ex) {
-//                System.out.println(ex.getMessage());
-//            }
-//        }
-//    }
+    // while (!valid) {
+    // System.out.println("Please enter the type of user you are:");
+    // System.out.println(
+    // "1. Registered User \n" +
+    // "2. Non-Registered User \n" +
+    // "3. Airport Administrator \n" +
+    // "4. Airline Administrator\n" +
+    // "5. System Administrator \n");
+    //
+    // userType = Integer.parseInt(scanner.nextLine());
+    //
+    // switch (userType) {
+    // case 1:
+    // user = new Users(true);
+    // valid = true;
+    // break;
+    // case 2:
+    // user = new Users(false);
+    // valid = true;
+    // break;
+    // case 3:
+    // // airport administrators have two operations they can do in console
+    // displayAdminOperations();
+    // int choice;
+    // do {
+    // choice = scanner.nextInt();
+    // System.out.println("Please enter the Airport code of your Airport: ");
+    // String airportCode = scanner.nextLine();
+    // // view flight info
+    // if (choice == 1) {
+    //
+    // int count = 0;
+    // for (int i = 0; i < airportList.size(); i++) {
+    // if (airportList.get(i).getCode().equals(airportCode)) {
+    // user = new AirportAdministrator(airportList.get(i), "aiportadmin1", "123");
+    // count++;
+    // break;
+    // }
+    // }
+    // if (count == 0) {
+    // System.out.println("ERROR: The Airport you entered does not exists");
+    // }
+    // valid = true;
+    // } // register a new flight into the database
+    // else if (choice == 2) {
+    // registerPrivateFlight(airportCode);
+    // }
+    // } while (choice > 2 || choice < 1);
+    // break;
+    // case 4:
+    // user = new AirlineAdministrator("airlineadmin1", "123", null);
+    // displayAdminOperations();
+    // choice = scanner.nextInt();
+    // if (choice == 2) {
+    // System.out.print("Enter the name of your airline as \"Airline-Name\": ");
+    // boolean success = registerNonPrivateFlight(scanner.next());
+    // if (success) {
+    // System.out.println("New flight was successfully added.");
+    // } else {
+    // System.out.println("Flight was not added. See above error.");
+    // }
+    // }
+    // valid = true;
+    // break;
+    // case 5:
+    // user = new SystemAdministrator("systemadmin1", "123");
+    // valid = true;
+    // break;
+    // default:
+    // System.out.println("ERROR: Please select a valid user type");
+    // valid = false;
+    // }
+    //
+    // }
+    //
+    // Airport source = null;
+    // Airport destination = null;
+    //
+    // System.out.println("Please enter the source airport of the flight you'd like
+    // to view");
+    // String src = scanner.nextLine();
+    // System.out.println("Please enter the destination airport of the flight you'd
+    // like to view");
+    // String dest = scanner.nextLine();
+    //
+    // for (int i = 0; i < airportList.size(); i++) {
+    // if (airportList.get(i).getCode().equals(src)) {
+    // source = airportList.get(i);
+    // } else if (airportList.get(i).getCode().equals(dest)) {
+    // destination = airportList.get(i);
+    // }
+    // }
+    // if (userType == 3) {
+    // // user = new AirportAdministrator(airportTest, "admin2", "123");
+    // if (user.getAirportLocation().getCode().equals(src) ||
+    // user.getAirportLocation().getCode().equals(dest)) {
+    // System.out.println(viewPrivateInfo(source, destination));
+    // } else {
+    // System.out.println(
+    // "You cannot view the information on this flight since it's source or
+    // destination airport does not match with yours");
+    // }
+    // } else if (userType == 1 || userType == 4 || userType == 5) {
+    // System.out.println(viewFullInfo(source, destination));
+    // } else {
+    // System.out.println(viewBasicInfo(source, destination));
+    // }
+    //
+    // // Remember to close the connection when done
+    // if (conn != null) {
+    // try {
+    // conn.close();
+    // } catch (SQLException ex) {
+    // System.out.println(ex.getMessage());
+    // }
+    // }
+    // }
 
     private static Airport findAirport(String code) {
         for (int i = 0; i < airportList.size(); i++) {
