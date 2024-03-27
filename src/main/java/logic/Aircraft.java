@@ -1,4 +1,4 @@
-package logic;
+package src.main.java.logic;
 
 enum Locations {
     TRANSIT, AIRPORT;

@@ -1,4 +1,4 @@
-package logic;
+package src.main.java.logic;
 
 import java.time.LocalDateTime;
 

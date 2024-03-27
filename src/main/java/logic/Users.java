@@ -1,4 +1,4 @@
-package logic;
+package src.main.java.logic;
 
 public class Users extends Actors {
     public Users(boolean reg) {
