@@ -1,11 +1,11 @@
-package src.logic;
+package logic;
 
 public abstract class Actors {
     protected boolean registered;
     protected String username;
     protected String password;
 
-    public boolean getRegistered(){
+    public boolean getRegistered() {
         return registered;
     }
 
@@ -13,4 +13,3 @@ public abstract class Actors {
         return null;
     }
 }
-

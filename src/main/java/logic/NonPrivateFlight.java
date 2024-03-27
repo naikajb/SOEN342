@@ -1,4 +1,4 @@
-package src.logic;
+package logic;
 
 import java.time.LocalDateTime;
 
@@ -6,12 +6,11 @@ enum Types {
     COMMERCIAL, CARGO;
 }
 
-
-public class NonPrivateFlight extends Flight{
+public class NonPrivateFlight extends Flight {
 
     private Types type;
 
-    //TODO: generate the flight number w/ format "AC-365"
+    // TODO: generate the flight number w/ format "AC-365"
     public NonPrivateFlight(
             Types t,
             Airport src,
@@ -20,8 +19,7 @@ public class NonPrivateFlight extends Flight{
             LocalDateTime scheduledArr,
             LocalDateTime actualDep,
             LocalDateTime estimatedDep,
-            Aircraft airC
-    ){
+            Aircraft airC) {
         type = t;
         source = src;
         destination = dest;
@@ -32,8 +30,5 @@ public class NonPrivateFlight extends Flight{
         aircraft = airC;
         super.flightNumber = super.assignRandomNumber();
     }
-
-
-
 
 }

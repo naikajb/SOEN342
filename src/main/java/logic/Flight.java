@@ -1,4 +1,4 @@
-package src.logic;
+package logic;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -13,56 +13,51 @@ public abstract class Flight {
     protected LocalDateTime estimatedArrival;
     protected Aircraft aircraft;
 
-
-
-    public Airport getSource(){
+    public Airport getSource() {
         return source;
     }
 
-    public Airport getDestination(){
+    public Airport getDestination() {
         return destination;
     }
 
-    public String getFlightNumber(){
+    public String getFlightNumber() {
         return flightNumber;
     }
 
-    public LocalDateTime getScheduledArrival(){
+    public LocalDateTime getScheduledArrival() {
         return scheduledArrival;
     }
 
-    public LocalDateTime getScheduledDeparture(){
+    public LocalDateTime getScheduledDeparture() {
         return scheduledDeparture;
     }
 
-    public LocalDateTime getActualDeparture(){
+    public LocalDateTime getActualDeparture() {
         return actualDeparture;
     }
 
-    public LocalDateTime getEstimatedArrival(){
+    public LocalDateTime getEstimatedArrival() {
         return estimatedArrival;
     }
 
-    public Aircraft getAircraft(){
+    public Aircraft getAircraft() {
         return aircraft;
     }
 
-    String assignRandomNumber(){
+    String assignRandomNumber() {
         Random rnd = new Random();
         StringBuilder code = new StringBuilder();
-        if (rnd.nextInt() % 2 == 0){
+        if (rnd.nextInt() % 2 == 0) {
             code.append("AA");
-        }else{
+        } else {
             code.append("BB");
         }
         code.append('-');
-        for(int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             code.append((char) rnd.nextInt());
         }
         return code.toString();
     }
 
-
-
 }
-
