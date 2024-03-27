@@ -1,4 +1,4 @@
-package logic;
+package src.main.java.logic;
 
 public abstract class Actors {
     protected boolean registered;
