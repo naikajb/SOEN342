@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import dataSource.DatabaseConnector;
+import dataSource.DatabaseInitializer;
 
 public class Console {
 
@@ -112,6 +113,9 @@ public class Console {
     public static void main(String[] args) {
         // Establish a connection to the database
         Connection conn = DatabaseConnector.connect();
+
+        // Create the tables if they don't exist
+        DatabaseInitializer.initializeSchema(conn);
 
         // flight test
         City montreal = new City("Montreal", "Canada", -10.0);
