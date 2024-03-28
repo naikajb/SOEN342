@@ -1,4 +1,4 @@
-package src.main.java.logic;
+package logic;
 
 import java.time.LocalDateTime;
 import java.util.Random;

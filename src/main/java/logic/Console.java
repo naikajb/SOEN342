@@ -1,4 +1,4 @@
-package src.main.java.logic;
+package logic;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import dataSource.DatabaseConnector;
+import src.main.java.dataSource.DatabaseConnector;
 import dataSource.DatabaseInitializer;
 
 public class Console {
