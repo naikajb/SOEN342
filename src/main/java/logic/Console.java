@@ -155,7 +155,7 @@ public class Console {
             System.out.println("Please enter your password: ");
             String password = scanner.nextLine();
 
-            // TODO: db code to fetch the user
+
 
             String type = ""; // depending on the type of user, different actions can be done
             boolean validChoice = false;
