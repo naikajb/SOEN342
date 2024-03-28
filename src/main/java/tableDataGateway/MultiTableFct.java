@@ -2,10 +2,12 @@ package tableDataGateway;
 
 import java.sql.Connection;
 
+import logic.Airport;
+
 public class MultiTableFct {
     private Connection conn;
 
-    public String getAirportCodeForCity(String cityName) {
+    public Airport getAirportCodeForCity(String cityName) {
         CityDAO cityDAO = new CityDAO(conn);
         AirportDAO airportDAO = new AirportDAO(conn);
 
@@ -14,6 +16,6 @@ public class MultiTableFct {
             return null; // Or handle this as an error condition appropriately
         }
 
-        return airportDAO.getAirportCodeByCityId(cityId);
+        return airportDAO.getAirportByCityId(cityId);
     }
 }
