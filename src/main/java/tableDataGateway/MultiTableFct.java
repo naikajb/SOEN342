@@ -7,6 +7,10 @@ import logic.Airport;
 public class MultiTableFct {
     private Connection conn;
 
+    public MultiTableFct(Connection conn) {
+        this.conn = conn;
+    }
+
     public Airport getAirportCodeForCity(String cityName) {
         CityDAO cityDAO = new CityDAO(conn);
         AirportDAO airportDAO = new AirportDAO(conn);
