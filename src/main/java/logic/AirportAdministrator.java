@@ -1,9 +1,14 @@
-package src.main.java.logic;
+package logic;
 
 public class AirportAdministrator extends Administrators {
-    private final Airport location;
+    private final long location; // in DB: cityId
+    protected long id;
+    protected boolean registered;
+    protected String username;
+    protected String password;
+    protected String actorType;
 
-    public AirportAdministrator(Airport loc, String username, String password) {
+    public AirportAdministrator(Long loc, String username, String password) {
         super();
         this.username = username;
         this.password = password;
@@ -18,7 +23,7 @@ public class AirportAdministrator extends Administrators {
         return this.password;
     }
 
-    public Airport getAirportLocation() {
+    public long getLocation() {
         return location;
     }
 }

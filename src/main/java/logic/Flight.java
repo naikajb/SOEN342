@@ -1,24 +1,39 @@
-package src.main.java.logic;
+package logic;
 
 import java.time.LocalDateTime;
 import java.util.Random;
 
 public abstract class Flight {
+    protected long id;
     protected String flightNumber;
-    protected Airport source;
-    protected Airport destination;
+    protected long sourceAirport; // in DB: sourceAirportId
+    protected long destinationAirport; // in DB: destinationAirportId
     protected LocalDateTime scheduledDeparture;
     protected LocalDateTime scheduledArrival;
     protected LocalDateTime actualDeparture;
     protected LocalDateTime estimatedArrival;
-    protected Aircraft aircraft;
+    protected long aircraftId;
 
-    public Airport getSource() {
-        return source;
+    public Flight(long id, String flightNumber, long sourceAirport, long destinationAirport,
+            LocalDateTime scheduledDeparture,
+            LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
+            long aircraftId) {
+        this.id = id;
+        this.sourceAirport = sourceAirport;
+        this.destinationAirport = destinationAirport;
+        this.scheduledDeparture = scheduledDeparture;
+        this.scheduledArrival = scheduledArrival;
+        this.actualDeparture = actualDeparture;
+        this.estimatedArrival = estimatedArrival;
+        this.aircraftId = aircraftId;
     }
 
-    public Airport getDestination() {
-        return destination;
+    public long getSource() {
+        return sourceAirport;
+    }
+
+    public long getDestination() {
+        return destinationAirport;
     }
 
     public String getFlightNumber() {
@@ -41,8 +56,8 @@ public abstract class Flight {
         return estimatedArrival;
     }
 
-    public Aircraft getAircraft() {
-        return aircraft;
+    public long getAircraft() {
+        return aircraftId;
     }
 
     String assignRandomNumber() {

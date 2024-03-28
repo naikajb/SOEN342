@@ -1,4 +1,4 @@
-package src.main.java.logic;
+package logic;
 
 public class Users extends Actors {
     public Users(boolean reg) {
@@ -10,5 +10,4 @@ public class Users extends Actors {
         this.username = username;
         this.password = password;
     }
-
 }
