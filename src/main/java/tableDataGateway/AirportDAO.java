@@ -13,7 +13,7 @@ public class AirportDAO {
     }
 
     // Get AirportCode by CityID
-    public String getAirportCodeByCityId(Long cityId) {
+    public String getAirportCodeByCityId(long cityId) {
         String sql = "SELECT AirportCode FROM Airport WHERE CityID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, cityId);

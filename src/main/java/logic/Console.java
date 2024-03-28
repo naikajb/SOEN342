@@ -22,12 +22,13 @@ public class Console {
     public static String viewBasicInfo(Airport source, Airport destination) {
         ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
         String info = "";
-        for (int i = 0; i < flightList.size(); i++) {
-            if (flightList.get(i).getSource() == source && flightList.get(i).getDestination() == destination
-                    && flightList.get(i) instanceof NonPrivateFlight) {
-                temp.add((NonPrivateFlight) flightList.get(i));
-            }
-        }
+        // for (int i = 0; i < flightList.size(); i++) {
+        // if (flightList.get(i).getSource() == source &&
+        // flightList.get(i).getDestination() == destination
+        // && flightList.get(i) instanceof NonPrivateFlight) {
+        // temp.add((NonPrivateFlight) flightList.get(i));
+        // }
+        // }
         if (temp.isEmpty()) {
             info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog or there is no Non-Private flights in the catalog.";
         } else {

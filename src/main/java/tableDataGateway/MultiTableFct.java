@@ -9,8 +9,8 @@ public class MultiTableFct {
         CityDAO cityDAO = new CityDAO(conn);
         AirportDAO airportDAO = new AirportDAO(conn);
 
-        Long cityId = cityDAO.getCityIdByName(cityName);
-        if (cityId == null) {
+        long cityId = cityDAO.getCityIdByName(cityName);
+        if (cityId == 0) {
             return null; // Or handle this as an error condition appropriately
         }
 
