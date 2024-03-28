@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import tableDataGateway.CityDAO;
+import tableDataGateway.MultiTableFct;
 import dataSource.DatabaseConnector;
 import dataSource.DatabaseInitializer;
 
@@ -176,13 +178,17 @@ public class Console {
                     while (!validChoice) {
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
-                            System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            String sourceCity = scanner.nextLine();
+
+                            System.out.println("Please enter the destination city of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
 
                             // TODO:find airports in database from the srcCode and destCode
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
