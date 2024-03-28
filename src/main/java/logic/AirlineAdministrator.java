@@ -3,9 +3,11 @@ package logic;
 public class AirlineAdministrator extends Administrators {
     private String username;
     private String password;
-    private Airline airline;
+    private long airline; // in DB: airlineId
+    protected long id;
+    protected String actorType;
 
-    public AirlineAdministrator(String username, String password, Airline airline) {
+    public AirlineAdministrator(String username, String password, long airline) {
         super();
         this.username = username;
         this.password = password;

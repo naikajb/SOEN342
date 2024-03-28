@@ -5,23 +5,23 @@ enum Locations {
 }
 
 public class Aircraft {
-    private long aircraftID;
-    private Airline airline;
-    private Locations location;
-    private String airportCode;// if location is not in transit, then which airport is it at
+    private long id;
+    private Locations location; // Enum: either TRANSIT or AIRPORT
+    private String aircraftCode; // ex; Boing-You're-Gonna-Die
+    private long airline; // in DB: airlineId
+    private long currentAirport;// in DB: airportId
 
-    public Aircraft(long id, Locations loc, Airline air) {
-        aircraftID = id;
-        location = loc;
-        airline = air;
+    public Aircraft(long id, Locations loc, String aircraftCode, Long airline, Long currentAirport) {
+        this.id = id;
+        this.location = loc;
+        this.aircraftCode = aircraftCode;
+        this.airline = airline;
+        this.currentAirport = currentAirport;
+
     }
 
-    public long getAircraftID() {
-        return aircraftID;
-    }
-
-    public Airline getAirline() {
-        return airline;
+    public long getId() {
+        return id;
     }
 
     public Locations getLocation() {
@@ -30,8 +30,8 @@ public class Aircraft {
 
     public boolean setAirportCode(String airportCode) {
         // check first that aircraft is not in transit
-        if (location == Locations.AIRPORT) {
-            this.airportCode = airportCode;
+        if (this.location == Locations.AIRPORT) {
+            this.currentAirport = currentAirport;
             return true;
         } else {
             // TODO: change this to throwing an error if necessary
@@ -42,6 +42,6 @@ public class Aircraft {
     // TODO: should this be changed to having a parameter "airportCode" so that I
     // just compare with airportcode attribute
     public boolean checkAircraftAvailability() {
-        return location == Locations.AIRPORT;
+        return this.location == Locations.AIRPORT;
     }
 }

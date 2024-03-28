@@ -1,6 +1,7 @@
 package logic;
 
 public class City {
+    long id;
     String name;
     String country;
     Double temperature;
