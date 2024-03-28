@@ -10,5 +10,4 @@ public class Users extends Actors {
         this.username = username;
         this.password = password;
     }
-
 }

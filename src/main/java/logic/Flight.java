@@ -14,6 +14,20 @@ public abstract class Flight {
     protected LocalDateTime estimatedArrival;
     protected long aircraftId;
 
+    public Flight(long id, String flightNumber, long sourceAirport, long destinationAirport,
+            LocalDateTime scheduledDeparture,
+            LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
+            long aircraftId) {
+        this.id = id;
+        this.sourceAirport = sourceAirport;
+        this.destinationAirport = destinationAirport;
+        this.scheduledDeparture = scheduledDeparture;
+        this.scheduledArrival = scheduledArrival;
+        this.actualDeparture = actualDeparture;
+        this.estimatedArrival = estimatedArrival;
+        this.aircraftId = aircraftId;
+    }
+
     public long getSource() {
         return sourceAirport;
     }
