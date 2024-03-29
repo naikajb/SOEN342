@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 import tableDataGateway.ActorsDAO;
 import tableDataGateway.CityDAO;
+import tableDataGateway.FlightsDAO;
 import tableDataGateway.MultiTableFct;
 import dataSource.DatabaseConnector;
 import dataSource.DatabaseInitializer;
@@ -22,34 +23,31 @@ public class Console {
     private static ArrayList<Airport> airportList = new ArrayList<Airport>();
     private static ArrayList<Airline> airlinesList = new ArrayList<>();
 
-    public static String viewBasicInfo(Airport source, Airport destination) {
-        ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
-        String info = "";
-        for (int i = 0; i < flightList.size(); i++) {
-            if (flightList.get(i).getSource() == source &&
-                    flightList.get(i).getDestination() == destination
-                    && flightList.get(i) instanceof NonPrivateFlight) {
-                temp.add((NonPrivateFlight) flightList.get(i));
-            }
-        }
-        if (temp.isEmpty()) {
-            info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog or there is no Non-Private flights in the catalog.";
-        } else {
-            for (int i = 0; i < temp.size(); i++) {
-                info += "Flight: " + temp.get(i).getFlightNumber() + "\n";
-                info += "Source: " + temp.get(i).getSource().getName() + "\n";
-                info += "Destination: " + temp.get(i).getDestination().getName() + "\n";
-                info += "Scheduled Departure: " + temp.get(i).getScheduledDeparture() + "\n";
-                info += "Scheduled Arrival: " + temp.get(i).getScheduledArrival() + "\n";
-                info += "Actual Departure: " + temp.get(i).getActualDeparture() + "\n";
-                info += "Estimated Arrival: " + temp.get(i).getEstimatedArrival() + "\n";
-            }
+    // Who: All users
+    // What: basic flight info: number, source, destination
+    // Which Flights: Non-Private Flights
+    public static String viewBasicInfo(Airport source, Airport destination, Connection conn) {
+        StringBuilder info = new StringBuilder();
+        FlightsDAO basicFlightInfo = new FlightsDAO(conn);
 
+        ArrayList<NonPrivateFlight> flights = basicFlightInfo.fetchNonPrivateFlights(source.getId(),
+                destination.getId());
+
+        if (flights.isEmpty()) {
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
         }
 
-        return info;
+        for (NonPrivateFlight flight : flights) {
+            info.append("Flight Number: ").append(flight.getFlightNumber())
+                    .append(", Source: ").append(source.getName())
+                    .append(", Destination: ").append(destination.getName())
+                    .append("\n");
+        }
+
+        return info.toString();
     }
 
+    // full info: number, source, destination, airline, aircraft.
     public static String viewFullInfo(Airport source, Airport destination) {
         ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
         String info = "";
