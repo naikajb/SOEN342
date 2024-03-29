@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+import tableDataGateway.ActorsDAO;
 import tableDataGateway.CityDAO;
 import tableDataGateway.MultiTableFct;
 import dataSource.DatabaseConnector;
@@ -158,7 +159,7 @@ public class Console {
             System.out.println("Please enter your password: ");
             String password = scanner.nextLine();
 
-            // TODO: db code to fetch the user
+
 
             String type = ""; // depending on the type of user, different actions can be done
             boolean validChoice = false;
@@ -168,6 +169,30 @@ public class Console {
                 type += "Non-registered";
             } else {
                 // TODO:set the type depending on the username + password in the database
+                ActorsDAO userDB = new ActorsDAO(conn);
+                String[] info  = userDB.getUserInfo(username,password);
+                if(info != null){
+                    if(info[1].equals( "P")){
+                        user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
+                        type = "Airport";
+                        System.out.println("Logged in as Airport Administrator " + username);
+                    } else if (info[1].equals("L")) {
+                        user = new AirlineAdministrator( username, password,Long.valueOf(info[3]));
+                        type = "Airline";
+                        System.out.println("Logged in as Airline Administrator " + username);
+                    } else if (info[1].equals("S")) {
+                        user = new SystemAdministrator(username,password);
+                        type = "System";
+                        System.out.println("Logged in as System Administrator " + username);
+                    }else if (info[1].equals("R")){
+                        user = new Users(username,password);
+                        user.registered = true;
+                        type = "Registered";
+                    }
+                }else{
+                    System.out.println("The info are null");
+                }
+
             }
 
             switch (type) {
@@ -179,10 +204,11 @@ public class Console {
                         if (choice == 1) {
 
                             System.out.println("Please enter the source city of the flight you'd like to view: ");
-                            String sourceCity = scanner.nextLine();
+                            String sourceCity = scanner.next();
+                            System.out.println("source city is: " +sourceCity);
 
                             System.out.println("Please enter the destination city of the flight you'd like to view: ");
-                            String destinationCity = scanner.nextLine();
+                            String destinationCity = scanner.next();
 
                             // TODO:find airports in database from the srcCode and destCode
                             MultiTableFct airportForCity = new MultiTableFct(conn);
@@ -316,10 +342,9 @@ public class Console {
                         if (choice == 1) {
 
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
-                            System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                            String sourceCode = scanner.next();
+                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            String destinationCode = scanner.next();
 
                             // TODO:find airports in database from the srcCode and destCode
                             // TODO:call correct viewFlightInfo from found airports
