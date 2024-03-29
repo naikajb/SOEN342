@@ -20,6 +20,12 @@ public class Console {
     private static ArrayList<Airport> airportList = new ArrayList<Airport>();
     private static ArrayList<Airline> airlinesList = new ArrayList<>();
 
+    // Get user info:
+    public static String[] getUserInfo(String username, String password, Connection conn) {
+        ActorsDAO userDB = new ActorsDAO(conn);
+        return userDB.getUserInfo(username, password);
+    }
+
     // Who: All users
     // What: basic flight info: flightNumber, source, destination
     // Which Flights: Non-Private Flights
@@ -147,8 +153,7 @@ public class Console {
                 System.out.println(type);
             } else {
                 // TODO:set the type depending on the username + password in the database
-                ActorsDAO userDB = new ActorsDAO(conn);
-                String[] info = userDB.getUserInfo(username, password);
+                String[] info = getUserInfo(username, password, conn);
                 if (info != null) {
                     if (info[1].equals("P")) {
                         user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
