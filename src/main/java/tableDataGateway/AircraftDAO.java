@@ -29,15 +29,14 @@ public class AircraftDAO {
                 String aircraftCode = rs.getString("aircraftCode");
                 Long airlineID = (long) rs.getInt("airlineID");
                 Long airportID = (long) rs.getInt("airportID");
-                aircraft = new Aircraft(id,location, aircraftCode,airlineID,airportID );
-              
-         } catch (SQLException e) {
+                aircraft = new Aircraft(id, location, aircraftCode, airlineID, airportID);
+
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-                  return aircraft;
+        return aircraft;
     }
-
-
 
     public String getAircraftCodeByAircraftId(long aircraftID) {
         String sql = "SELECT aircraftCode FROM Aircraft WHERE id = ?";
@@ -53,7 +52,7 @@ public class AircraftDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-      return null;
+        return null;
     }
 
     public static boolean hasAircraftsInAirline(Connection conn, long airlineID) {
@@ -69,14 +68,13 @@ public class AircraftDAO {
                 if (count > 0) {
                     hasAircrafts = true;
                 }
-              
-               }
+
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return hasAircrafts;
     }
-   
 
     public long getAirlineIdByAircraftId(long aircraftID) {
         String sql = "SELECT airlineID FROM Aircraft WHERE id = ?";

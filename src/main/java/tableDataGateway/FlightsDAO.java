@@ -14,11 +14,14 @@ public class FlightsDAO {
         this.conn = conn;
     }
 
-    public static boolean registerPrivateFlight(Connection conn, String flightNumber, long sourceAirport, long destinationAirport,
-                                                LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
-                                                long aircraftId) {
+    public static boolean registerPrivateFlight(Connection conn, String flightNumber, long sourceAirport,
+            long destinationAirport,
+            LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture,
+            LocalDateTime estimatedArrival,
+            long aircraftId) {
         try {
-            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) " +
+            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) "
+                    +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "airportName");
@@ -40,11 +43,14 @@ public class FlightsDAO {
         }
     }
 
-    public static boolean registerNonPrivateFlight(Connection conn, String flightNumber, long sourceAirport, long destinationAirport,
-                                                   LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
-                                                   long aircraftId, FlightTypes flightType) {
+    public static boolean registerNonPrivateFlight(Connection conn, String flightNumber, long sourceAirport,
+            long destinationAirport,
+            LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture,
+            LocalDateTime estimatedArrival,
+            long aircraftId, FlightTypes flightType) {
         try {
-            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator, flightType) " +
+            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator, flightType) "
+                    +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "airportName");
@@ -66,8 +72,6 @@ public class FlightsDAO {
             return false;
         }
     }
-
-
 
     public static ArrayList<Flight> getFlightsDepartingFromAirport(Connection conn, Long airportID) {
         ArrayList<Flight> flights = new ArrayList<>();
@@ -93,19 +97,20 @@ public class FlightsDAO {
                 FlightTypes flighType = FlightTypes.valueOf(rs.getString("flightType"));
 
                 if (type.equals("p")) {
-                    flight = new PrivateFlight(id, flightNum, srcAiport, destAirport, scheduledDepart, scheduledArr, actualDepart, actualArr, aircraftId);
+                    flight = new PrivateFlight(id, flightNum, srcAiport, destAirport, scheduledDepart, scheduledArr,
+                            actualDepart, actualArr, aircraftId);
                 } else if (type.equals("np")) {
-                    flight = new NonPrivateFlight(id, flightNum, srcAiport, destAirport, scheduledDepart, scheduledArr, actualDepart, actualArr, aircraftId, flighType);
+                    flight = new NonPrivateFlight(id, flightNum, srcAiport, destAirport, scheduledDepart, scheduledArr,
+                            actualDepart, actualArr, aircraftId, flighType);
                 }
-                
-              flights.add(flight);
+
+                flights.add(flight);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return flights;
     }
-
 
     public ArrayList<NonPrivateFlight> fetchNonPrivateFlights(long sourceAirportId, long destAirportId) {
         ArrayList<NonPrivateFlight> flights = new ArrayList<>();
@@ -177,7 +182,11 @@ public class FlightsDAO {
                 if (count > 0) {
                     hasFlight = true;
                 }
-              
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
         return hasFlight;
     }
 
