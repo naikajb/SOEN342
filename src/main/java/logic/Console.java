@@ -218,14 +218,19 @@ public class Console {
 
                     while (!validChoice) {
                         if (choice == 1) {
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
+                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            String sourceCity = scanner.nextLine();
+
                             System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
                             System.out.println("dfhvbjd");
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCity and destCity
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
@@ -259,13 +264,17 @@ public class Console {
                     while (!validChoice) {
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
+                            System.out.println("Please enter the source City of the flight you'd like to view: ");
+                            String sourceCity = scanner.nextLine();
                             System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                                    .println("Please enter the destination City of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCity and destCity
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
