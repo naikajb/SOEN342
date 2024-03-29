@@ -13,7 +13,7 @@ public abstract class Actors {
         return registered;
     }
 
-    protected long getAirportLocation() {
-        return location;
+    protected Airport getAirportLocation() {
+        return null;
     }
 }
