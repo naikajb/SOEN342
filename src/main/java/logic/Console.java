@@ -147,10 +147,11 @@ public class Console {
         int userType = 0;
 
         while (!valid) {
-            System.out.println("Please enter your username: ");
-            String username = scanner.nextLine();
-            System.out.println("Please enter your password: ");
-            String password = scanner.nextLine();
+            System.out.print("Please enter your username: ");
+            String username = scanner.next();
+            scanner.nextLine();
+            System.out.print("Please enter your password: ");
+            String password = scanner.next();
 
             String type = ""; // depending on the type of user, different actions can be done
             boolean validChoice = false;
@@ -166,23 +167,23 @@ public class Console {
                     if (info[1].equals("P")) {
                         user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
                         type = "Airport";
-                        System.out.println(type);
+                        //System.out.println(type);
                         System.out.println("Logged in as Airport Administrator " + username);
                     } else if (info[1].equals("L")) {
                         user = new AirlineAdministrator(username, password, Long.valueOf(info[3]));
                         type = "Airline";
                         System.out.println("Logged in as Airline Administrator " + username);
-                        System.out.println(type);
+                        //System.out.println(type);
                     } else if (info[1].equals("S")) {
                         user = new SystemAdministrator(username, password);
                         type = "System";
                         System.out.println("Logged in as System Administrator " + username);
-                        System.out.println(type);
+                        //System.out.println(type);
                     } else if (info[1].equals("R")) {
                         user = new Users(username, password);
                         user.registered = true;
                         type = "Registered";
-                        System.out.println(type);
+                        //System.out.println(type);
                     }
                 } else {
                     System.out.println("The info are null");
@@ -198,12 +199,14 @@ public class Console {
                     while (!validChoice) {
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source city of the flight you'd like to view: ");
-                            String sourceCity = scanner.next();
-                            System.out.println("source city is: " + sourceCity);
+                            System.out.print("Please enter the source city of the flight you'd like to view: ");
+                            scanner.nextLine();
+                            String sourceCity = scanner.nextLine();
+                            //System.out.println("source city is: " + sourceCity);
 
-                            System.out.println("Please enter the destination city of the flight you'd like to view: ");
-                            String destinationCity = scanner.next();
+                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
+                            scanner.nextLine();
+                            String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
                             Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
@@ -241,10 +244,11 @@ public class Console {
 
                     while (!validChoice) {
                         if (choice == 1) {
-                            System.out.println("Please enter the source City of the flight you'd like to view: ");
+                            System.out.print("Please enter the source City of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String sourceCity = scanner.nextLine();
-                            System.out
-                                    .println("Please enter the destination City of the flight you'd like to view: ");
+                            System.out.print("Please enter the destination City of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
@@ -286,10 +290,11 @@ public class Console {
                     while (!validChoice) {
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            System.out.print("Please enter the source city of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String sourceCity = scanner.nextLine();
-                            System.out
-                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
@@ -331,10 +336,11 @@ public class Console {
 
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            System.out.print("Please enter the source city of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String sourceCity = scanner.nextLine();
-                            System.out
-                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
@@ -362,10 +368,11 @@ public class Console {
 
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            System.out.print("Please enter the source city of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String sourceCity = scanner.next();
-                            System.out
-                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
+                            scanner.nextLine();
                             String destinationCity = scanner.next();
 
                             // Find airports in database from the srcCode and destCode
