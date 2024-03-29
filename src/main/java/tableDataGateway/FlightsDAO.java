@@ -13,16 +13,15 @@ public class FlightsDAO {
         this.conn = conn;
     }
 
-    public static boolean registerPrivateFlight(Connection conn, String flightNumber, long sourceAirport,
+    public boolean registerPrivateFlight(Connection conn, String flightNumber, long sourceAirport,
             long destinationAirport,
             LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture,
             LocalDateTime estimatedArrival,
             long aircraftId) {
-        try {
-            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) "
-                    +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) "
+                +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, "airportName");
             pstmt.setString(2, flightNumber);
             pstmt.setLong(3, sourceAirport);
@@ -42,16 +41,16 @@ public class FlightsDAO {
         }
     }
 
-    public static boolean registerNonPrivateFlight(Connection conn, String flightNumber, long sourceAirport,
+    public boolean registerNonPrivateFlight(Connection conn, String flightNumber, long sourceAirport,
             long destinationAirport,
             LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture,
             LocalDateTime estimatedArrival,
             long aircraftId, FlightTypes flightType) {
-        try {
-            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator, flightType) "
-                    +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator, flightType) "
+                +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, "airportName");
             pstmt.setString(2, flightNumber);
             pstmt.setLong(3, sourceAirport);
@@ -72,11 +71,11 @@ public class FlightsDAO {
         }
     }
 
-    public static ArrayList<Flight> getFlightsDepartingFromAirport(Connection conn, Long airportID) {
+    public ArrayList<Flight> getFlightsDepartingFromAirport(Long airportID) {
         ArrayList<Flight> flights = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Flight WHERE sourceAirport = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM Flight WHERE sourceAirport = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, airportID);
             ResultSet rs = pstmt.executeQuery();
 
@@ -147,11 +146,11 @@ public class FlightsDAO {
         return flights;
     }
 
-    public static boolean hasFlightWithDestinationAirport(Connection conn, long destinationAirportID) {
+    public boolean hasFlightWithDestinationAirport(Connection conn, long destinationAirportID) {
         boolean hasFlight = false;
-        try {
-            String sql = "SELECT COUNT(*) FROM Flight WHERE destinationAirport = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT COUNT(*) FROM Flight WHERE destinationAirport = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, destinationAirportID);
             ResultSet rs = pstmt.executeQuery();
 
@@ -167,11 +166,10 @@ public class FlightsDAO {
         return hasFlight;
     }
 
-    public static boolean hasFlightWithScheduledArrival(Connection conn, LocalDateTime scheduledArrival) {
+    public boolean hasFlightWithScheduledArrival(Connection conn, LocalDateTime scheduledArrival) {
         boolean hasFlight = false;
-        try {
-            String sql = "SELECT COUNT(*) FROM Flight WHERE scheduleArrival = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT COUNT(*) FROM Flight WHERE scheduleArrival = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setTimestamp(1, Timestamp.valueOf(scheduledArrival));
             ResultSet rs = pstmt.executeQuery();
 

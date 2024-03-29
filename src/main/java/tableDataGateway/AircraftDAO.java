@@ -15,11 +15,12 @@ public class AircraftDAO {
         this.conn = conn;
     }
 
-    public static Aircraft findAircraftByAirportCode(Connection conn, String airportCode) {
+    public Aircraft findAircraftByAirportCode(String airportCode) {
         Aircraft aircraft = null;
-        try {
-            String sql = "SELECT * FROM Aircraft WHERE airportID = (SELECT id FROM Airport WHERE AirportCode = ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        String sql = "SELECT * FROM Aircraft WHERE airportID = (SELECT id FROM Airport WHERE AirportCode = ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, airportCode);
             ResultSet rs = pstmt.executeQuery();
 
@@ -55,12 +56,13 @@ public class AircraftDAO {
         return null;
     }
 
-    public static boolean hasAircraftsInAirline(Connection conn, long airlineID) {
+    public boolean hasAircraftsInAirline(long airlineID) {
         boolean hasAircrafts = false;
-        try {
-            String sql = "SELECT COUNT(*) FROM Aircraft WHERE airlineID = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT COUNT(*) FROM Aircraft WHERE airlineID = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, airlineID);
+
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {

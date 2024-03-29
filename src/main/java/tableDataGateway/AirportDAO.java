@@ -57,11 +57,11 @@ public class AirportDAO {
         return null; // Airport not found or error occurred
     }
 
-    public static Airport getAirportByAirportCode(Connection conn, String airportCode) {
+    public Airport getAirportByAirportCode(String airportCode) {
         Airport airport = null;
-        try {
-            String sql = "SELECT * FROM Airport WHERE AirportCode = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM Airport WHERE AirportCode = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, airportCode);
             ResultSet rs = pstmt.executeQuery();
 
@@ -70,7 +70,7 @@ public class AirportDAO {
                 String name = rs.getString("name");
                 String code = rs.getString("AirportCode");
                 Long cityID = (long) rs.getInt("CityID");
-                airport = new Airport(name,code,cityID,id);
+                airport = new Airport(name, code, cityID, id);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -78,11 +78,10 @@ public class AirportDAO {
         return airport;
     }
 
-    public static String getAirportCodeById(Connection conn, long airportID) {
+    public String getAirportCodeById(long airportID) {
         String airportCode = null;
-        try {
-            String sql = "SELECT AirportCode FROM Airport WHERE id = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT AirportCode FROM Airport WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, airportID);
             ResultSet rs = pstmt.executeQuery();
 
@@ -94,7 +93,5 @@ public class AirportDAO {
         }
         return airportCode;
     }
-
-
 
 }
