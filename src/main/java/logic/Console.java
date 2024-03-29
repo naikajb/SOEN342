@@ -192,7 +192,7 @@ public class Console {
                             System.out.println("Please enter the destination city of the flight you'd like to view: ");
                             String destinationCity = scanner.next();
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCode and destCode
                             MultiTableFct airportForCity = new MultiTableFct(conn);
                             Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
                             Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
@@ -204,7 +204,7 @@ public class Console {
                         } else if (choice == 2) {
                             long airportId = user.getAirportLocation();
                             AirportDAO airportDAO = new AirportDAO(conn);
-                            String airportCode = airportDAO.getAirportCodeById(conn,airportId);
+                            String airportCode = airportDAO.getAirportCodeById(conn, airportId);
                             boolean success = registerPrivateFlight(airportCode);
 
                             if (success) {
@@ -229,13 +229,17 @@ public class Console {
 
                     while (!validChoice) {
                         if (choice == 1) {
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
+                            System.out.println("Please enter the source City of the flight you'd like to view: ");
+                            String sourceCity = scanner.nextLine();
                             System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                                    .println("Please enter the destination City of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCode and destCode
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
@@ -244,7 +248,8 @@ public class Console {
 
                             System.out.print("Enter the source airport of the flight you'd like to register: ");
                             String airportCode = scanner.nextLine();
-                            boolean success = registerNonPrivateFlight(airportCode,((AirlineAdministrator)user).getAirline());
+                            boolean success = registerNonPrivateFlight(airportCode,
+                                    ((AirlineAdministrator) user).getAirline());
                             if (success) {
                                 System.out.println("New flight was successfully added.");
                             } else {
@@ -270,13 +275,17 @@ public class Console {
                     while (!validChoice) {
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
+                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            String sourceCity = scanner.nextLine();
                             System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCode and destCode
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
@@ -302,13 +311,17 @@ public class Console {
 
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.nextLine();
+                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            String sourceCity = scanner.nextLine();
                             System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.nextLine();
+                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCode and destCode
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             validChoice = true;
@@ -330,13 +343,17 @@ public class Console {
 
                         if (choice == 1) {
 
-                            System.out.println("Please enter the source airport of the flight you'd like to view: ");
-                            String sourceCode = scanner.next();
+                            System.out.println("Please enter the source city of the flight you'd like to view: ");
+                            String sourceCity = scanner.next();
                             System.out
-                                    .println("Please enter the destination airport of the flight you'd like to view: ");
-                            String destinationCode = scanner.next();
+                                    .println("Please enter the destination city of the flight you'd like to view: ");
+                            String destinationCity = scanner.next();
 
-                            // TODO:find airports in database from the srcCode and destCode
+                            // Find airports in database from the srcCode and destCode
+                            MultiTableFct airportForCity = new MultiTableFct(conn);
+                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
+                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+
                             // TODO:call correct viewFlightInfo from found airports
 
                             System.out.println("fhsdvhjd");
@@ -497,9 +514,11 @@ public class Console {
         AircraftDAO aircraftDAO = new AircraftDAO(conn);
         FlightsDAO flightDAO = new FlightsDAO(conn);
 
-        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn,airportCode); //available aircraft in airport
-        Airport currentAirport = airportDAO.getAirportByAirportCode(conn,airportCode);
-        boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(conn, airlineID); //available aircraft in the airline
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn, airportCode); // available aircraft in
+                                                                                               // airport
+        Airport currentAirport = airportDAO.getAirportByAirportCode(conn, airportCode);
+        boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(conn, airlineID); // available aircraft in the
+                                                                                         // airline
         // don't continue if no aircraft was found
         if (availableAircraft == null || !airlineHasAircraft) {
             System.out.println("Unable to register a new flight since no aircrafts are currently available.");
@@ -513,7 +532,7 @@ public class Console {
             dateTime = convertToLocalDateTime(timeInput);
 
             // get the flights that are departing from this airport
-            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId()) ;
+            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId());
 
             // check if any flights are departing at the same time
             for (int i = 0; i < existingFlights.size(); i++) {
@@ -536,8 +555,7 @@ public class Console {
             String destCode = scanner.next();
             LocalDateTime arrDateTime = null;
 
-
-            Airport destAirport = airportDAO.getAirportByAirportCode(conn,destCode);
+            Airport destAirport = airportDAO.getAirportByAirportCode(conn, destCode);
             if (destAirport != null) {
                 System.out.print("Enter the arrival time for this flight: ");
                 arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
@@ -555,7 +573,8 @@ public class Console {
                 System.out.println("Enter the type of the flight: ");
                 String flightType = scanner.nextLine();
                 // none were found so we can create flight and register it
-                flightDAO.registerNonPrivateFlight(conn,"AC 456", currentAirport.getId(),destAirport.getId(),dateTime,arrDateTime,null,null,availableAircraft.getId(),FlightTypes.valueOf(flightType));
+                flightDAO.registerNonPrivateFlight(conn, "AC 456", currentAirport.getId(), destAirport.getId(),
+                        dateTime, arrDateTime, null, null, availableAircraft.getId(), FlightTypes.valueOf(flightType));
                 return true;
             } else {
                 System.out.print("Cannot register this flight because no airport exists with this code.");
@@ -570,9 +589,8 @@ public class Console {
         AircraftDAO aircraftDAO = new AircraftDAO(conn);
         FlightsDAO flightDAO = new FlightsDAO(conn);
 
-        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn,airportCode);
-        Airport currentAirport = airportDAO.getAirportByAirportCode(conn,airportCode);
-
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn, airportCode);
+        Airport currentAirport = airportDAO.getAirportByAirportCode(conn, airportCode);
 
         // don't continue if no aircraft was found
         if (availableAircraft == null) {
@@ -587,7 +605,7 @@ public class Console {
             dateTime = convertToLocalDateTime(timeInput);
 
             // get the flights that are departing from this airport
-            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId()) ;
+            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId());
 
             // check if any flights are departing at the same time
             for (int i = 0; i < existingFlights.size(); i++) {
@@ -609,8 +627,7 @@ public class Console {
             String destCode = scanner.next();
             LocalDateTime arrDateTime = null;
 
-
-            Airport destAirport = airportDAO.getAirportByAirportCode(conn,destCode);
+            Airport destAirport = airportDAO.getAirportByAirportCode(conn, destCode);
             if (destAirport != null) {
                 System.out.print("Enter the arrival time for this flight: ");
                 arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
@@ -626,7 +643,8 @@ public class Console {
                 }
 
                 // none were found so we can create flight and register it
-                flightDAO.registerPrivateFlight(conn,"AC 456", currentAirport.getId(),destAirport.getId(),dateTime,arrDateTime,null,null,availableAircraft.getId());
+                flightDAO.registerPrivateFlight(conn, "AC 456", currentAirport.getId(), destAirport.getId(), dateTime,
+                        arrDateTime, null, null, availableAircraft.getId());
                 return true;
             } else {
                 System.out.print("Cannot register this flight because no airport exists with this code.");
