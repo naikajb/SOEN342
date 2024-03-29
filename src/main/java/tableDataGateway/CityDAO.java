@@ -34,8 +34,8 @@ public class CityDAO {
     }
 
     // Get CityID by given City Name
-    public Long getCityIdByName(String cityName) {
-        String sql = "SELECT id FROM City WHERE name = \'" + cityName +"\';";
+    public long getCityIdByName(String cityName) {
+        String sql = "SELECT id FROM City WHERE name = \'" + cityName + "\';";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, cityName);
             ResultSet rs = pstmt.executeQuery();
@@ -45,7 +45,7 @@ public class CityDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null; // City not found or error occurred
+        return -1; // City not found or error occurred
     }
 
     public long registerCity(String city, String country, Double temp) {

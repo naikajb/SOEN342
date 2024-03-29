@@ -15,11 +15,12 @@ public class AircraftDAO {
         this.conn = conn;
     }
 
-    public static Aircraft findAircraftByAirportCode(Connection conn, String airportCode) {
+    public Aircraft findAircraftByAirportCode(String airportCode) {
         Aircraft aircraft = null;
-        try {
-            String sql = "SELECT * FROM Aircraft WHERE airportID = (SELECT id FROM Airport WHERE AirportCode = ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        String sql = "SELECT * FROM Aircraft WHERE airportID = (SELECT id FROM Airport WHERE AirportCode = ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, airportCode);
             ResultSet rs = pstmt.executeQuery();
 
@@ -29,15 +30,14 @@ public class AircraftDAO {
                 String aircraftCode = rs.getString("aircraftCode");
                 Long airlineID = (long) rs.getInt("airlineID");
                 Long airportID = (long) rs.getInt("airportID");
-                aircraft = new Aircraft(id,location, aircraftCode,airlineID,airportID );
-              
-         } catch (SQLException e) {
+                aircraft = new Aircraft(id, location, aircraftCode, airlineID, airportID);
+
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-                  return aircraft;
+        return aircraft;
     }
-
-
 
     public String getAircraftCodeByAircraftId(long aircraftID) {
         String sql = "SELECT aircraftCode FROM Aircraft WHERE id = ?";
@@ -53,15 +53,16 @@ public class AircraftDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-      return null;
+        return null;
     }
 
-    public static boolean hasAircraftsInAirline(Connection conn, long airlineID) {
+    public boolean hasAircraftsInAirline(long airlineID) {
         boolean hasAircrafts = false;
-        try {
-            String sql = "SELECT COUNT(*) FROM Aircraft WHERE airlineID = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        String sql = "SELECT COUNT(*) FROM Aircraft WHERE airlineID = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, airlineID);
+
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -69,14 +70,13 @@ public class AircraftDAO {
                 if (count > 0) {
                     hasAircrafts = true;
                 }
-              
-               }
+
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return hasAircrafts;
     }
-   
 
     public long getAirlineIdByAircraftId(long aircraftID) {
         String sql = "SELECT airlineID FROM Aircraft WHERE id = ?";
