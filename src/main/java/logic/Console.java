@@ -25,13 +25,13 @@ public class Console {
     public static String viewBasicInfo(Airport source, Airport destination) {
         ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
         String info = "";
-        // for (int i = 0; i < flightList.size(); i++) {
-        // if (flightList.get(i).getSource() == source &&
-        // flightList.get(i).getDestination() == destination
-        // && flightList.get(i) instanceof NonPrivateFlight) {
-        // temp.add((NonPrivateFlight) flightList.get(i));
-        // }
-        // }
+        for (int i = 0; i < flightList.size(); i++) {
+            if (flightList.get(i).getSource() == source &&
+                    flightList.get(i).getDestination() == destination
+                    && flightList.get(i) instanceof NonPrivateFlight) {
+                temp.add((NonPrivateFlight) flightList.get(i));
+            }
+        }
         if (temp.isEmpty()) {
             info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog or there is no Non-Private flights in the catalog.";
         } else {
@@ -121,33 +121,6 @@ public class Console {
         // Create the tables if they don't exist
         DatabaseInitializer.initializeSchema(conn);
 
-        // flight test
-        City montreal = new City("Montreal", "Canada", -10.0);
-        City newYork = new City("New York", "USA", -11.5);
-        City chicago = new City("Chicago", "USA", -10.0);
-
-        Airport airport1 = new Airport("Pierre-Elliot Trudeau", "YUL", montreal);
-        Airport airport2 = new Airport("John-F Kennedy", "JFK", newYork);
-        Airport airportTest = new Airport("O'Hare International Airport", "ORD", chicago);
-
-        airportList.add(airport1);
-        airportList.add(airport2);
-        airportList.add(airportTest);
-
-        LocalDateTime scheduledDep = LocalDateTime.of(2025, 6, 30, 15, 45);
-        LocalDateTime scheduledDArr = LocalDateTime.of(2025, 6, 30, 17, 15);
-        LocalDateTime actualDep = LocalDateTime.of(2025, 6, 30, 15, 48);
-        LocalDateTime estimatedArr = LocalDateTime.of(2025, 6, 30, 17, 18);
-
-        Aircraft boeing = new Aircraft(1234567890L, Locations.AIRPORT, null);
-
-        Airline airlineTest = new Airline("Air Canada", (new ArrayList<Aircraft>()));
-        airlineTest.getAircraftList().add(boeing);
-
-        NonPrivateFlight flight1 = new NonPrivateFlight(Types.CARGO, airport1, airport2, scheduledDep, scheduledDArr,
-                actualDep, estimatedArr, boeing);
-        flightList.add(flight1);
-
         Actors user = null;
 
         boolean valid = false;
@@ -159,8 +132,6 @@ public class Console {
             System.out.println("Please enter your password: ");
             String password = scanner.nextLine();
 
-
-
             String type = ""; // depending on the type of user, different actions can be done
             boolean validChoice = false;
             int choice = 0; // type of action the user wants to do
@@ -170,26 +141,26 @@ public class Console {
             } else {
                 // TODO:set the type depending on the username + password in the database
                 ActorsDAO userDB = new ActorsDAO(conn);
-                String[] info  = userDB.getUserInfo(username,password);
-                if(info != null){
-                    if(info[1].equals( "P")){
+                String[] info = userDB.getUserInfo(username, password);
+                if (info != null) {
+                    if (info[1].equals("P")) {
                         user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
                         type = "Airport";
                         System.out.println("Logged in as Airport Administrator " + username);
                     } else if (info[1].equals("L")) {
-                        user = new AirlineAdministrator( username, password,Long.valueOf(info[3]));
+                        user = new AirlineAdministrator(username, password, Long.valueOf(info[3]));
                         type = "Airline";
                         System.out.println("Logged in as Airline Administrator " + username);
                     } else if (info[1].equals("S")) {
-                        user = new SystemAdministrator(username,password);
+                        user = new SystemAdministrator(username, password);
                         type = "System";
                         System.out.println("Logged in as System Administrator " + username);
-                    }else if (info[1].equals("R")){
-                        user = new Users(username,password);
+                    } else if (info[1].equals("R")) {
+                        user = new Users(username, password);
                         user.registered = true;
                         type = "Registered";
                     }
-                }else{
+                } else {
                     System.out.println("The info are null");
                 }
 
@@ -205,7 +176,7 @@ public class Console {
 
                             System.out.println("Please enter the source city of the flight you'd like to view: ");
                             String sourceCity = scanner.next();
-                            System.out.println("source city is: " +sourceCity);
+                            System.out.println("source city is: " + sourceCity);
 
                             System.out.println("Please enter the destination city of the flight you'd like to view: ");
                             String destinationCity = scanner.next();
@@ -343,7 +314,8 @@ public class Console {
 
                             System.out.println("Please enter the source airport of the flight you'd like to view: ");
                             String sourceCode = scanner.next();
-                            System.out.println("Please enter the destination airport of the flight you'd like to view: ");
+                            System.out
+                                    .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.next();
 
                             // TODO:find airports in database from the srcCode and destCode
