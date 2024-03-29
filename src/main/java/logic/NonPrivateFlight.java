@@ -24,4 +24,8 @@ public class NonPrivateFlight extends Flight {
         this.flightType = flightType;
     }
 
+    public FlightTypes getFlightType() {
+        return flightType;
+    }
+
 }
