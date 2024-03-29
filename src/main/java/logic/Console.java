@@ -161,7 +161,7 @@ public class Console {
                 type += "Non-registered";
                 System.out.println(type);
             } else {
-                // TODO:set the type depending on the username + password in the database
+
                 String[] info = getUserInfo(username, password, conn);
                 if (info != null) {
                     if (info[1].equals("P")) {
