@@ -83,7 +83,6 @@ public class FlightsDAO {
             while (rs.next()) {
                 Flight flight = null;
                 int id = rs.getInt("id");
-                String name = rs.getString("name");
                 String flightNum = rs.getString("flightNumber");
                 Long aircraftId = (long) rs.getInt("aircraftID");
                 String type = rs.getString("Discriminator");
