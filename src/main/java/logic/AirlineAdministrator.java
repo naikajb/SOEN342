@@ -13,4 +13,8 @@ public class AirlineAdministrator extends Administrators {
         this.password = password;
         this.airline = airline;
     }
+
+    public long getAirline(){
+        return airline;
+    }
 }

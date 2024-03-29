@@ -1,9 +1,5 @@
 package logic;
 
-enum Locations {
-    TRANSIT, AIRPORT;
-}
-
 public class Aircraft {
     private long id;
     private Locations location; // Enum: either TRANSIT or AIRPORT

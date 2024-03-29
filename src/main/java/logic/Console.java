@@ -21,7 +21,7 @@ public class Console {
     private static ArrayList<Airline> airlinesList = new ArrayList<>();
 
     // Who: All users
-    // What: basic flight info: number, source, destination
+    // What: basic flight info: flightNumber, source, destination
     // Which Flights: Non-Private Flights
     public static String viewBasicInfo(Airport source, Airport destination, Connection conn) {
         StringBuilder info = new StringBuilder();
@@ -44,69 +44,81 @@ public class Console {
         return info.toString();
     }
 
-    // full info: number, source, destination, airline, aircraft.
-    public static String viewFullInfo(Airport source, Airport destination) {
-        ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
-        String info = "";
-//        for (int i = 0; i < flightList.size(); i++) {
-//            if (flightList.get(i).getSource() == source && flightList.get(i).getDestination() == destination
-//                    && flightList.get(i) instanceof NonPrivateFlight) {
-//                temp.add((NonPrivateFlight) flightList.get(i));
-//            }
-//        }
-//        if (temp.isEmpty()) {
-//            info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog or there is no Non-Private flights in the catalog.";
-//        } else {
-//            for (int i = 0; i < temp.size(); i++) {
-//                info += "Flight: " + temp.get(i).getFlightNumber() + "\n";
-//                info += "Source: " + temp.get(i).getSource().getName() + "\n";
-//                info += "Destination: " + temp.get(i).getDestination().getName() + "\n";
-//                info += "Aircraft ID: " + temp.get(i).getAircraft().getAircraftID() + "\n";
-//                info += "Scheduled Arrival: " + temp.get(i).getScheduledArrival() + "\n";
-//                info += "Actual Departure: " + temp.get(i).getActualDeparture() + "\n";
-//                info += "Estimated Arrival: " + temp.get(i).getEstimatedArrival() + "\n";
-//                try {
-//                    info += "Airline Name: " + temp.get(i).getAircraft().getAirline().getName() + "\n";
-//                } catch (NullPointerException e) {
-//                    info += "There is no Airline associated to the Aircraft of the Flight";
-//                }
-//            }
-//
-//        }
 
-        return info;
+    // Who: Registered Users
+    // What: full flight info: flightNumber, source, destination, airline, aircraft,
+    // scheduledDeparture, scheduledArrival
+    // Which Flights: Non-Private Flights.
+    public static String viewFullInfo(Airport source, Airport destination, Connection conn) {
+        StringBuilder info = new StringBuilder();
+        FlightsDAO fullFlightInfo = new FlightsDAO(conn);
+        AircraftDAO aircraftInfo = new AircraftDAO(conn); // Assuming you have this DAO
+        AirlineDAO airlineInfo = new AirlineDAO(conn); // Assuming you have this DAO
+
+        ArrayList<NonPrivateFlight> flights = fullFlightInfo.fetchNonPrivateFlights(source.getId(),
+                destination.getId());
+
+        if (flights.isEmpty()) {
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+        }
+
+        for (NonPrivateFlight flight : flights) {
+            // Fetching additional details
+            String aircraftCode = aircraftInfo.getAircraftCodeByAircraftId(flight.getAircraftId());
+            long airlineId = aircraftInfo.getAirlineIdByAircraftId(flight.getAircraftId());
+            String airlineName = airlineInfo.getAirlineNameByAirlineId(airlineId);
+
+            info.append("Flight Number: ").append(flight.getFlightNumber())
+                    .append(", Airline: ").append(airlineName)
+                    .append(", Aircraft: ").append(aircraftCode)
+                    .append(", Flight Type: ").append(flight.getFlightType().toString())
+                    .append(", Source: ").append(source.getName())
+                    .append(", Destination: ").append(destination.getName())
+                    .append(", Scheduled Departure: ").append(flight.getScheduledDeparture().toString())
+                    .append(", Actual Departure: ")
+                    .append(flight.getActualDeparture() != null ? flight.getActualDeparture().toString()
+                            : "HAS NOT DEPARTED YET")
+                    .append(", Scheduled Arrival: ").append(flight.getScheduledArrival().toString())
+                    .append(", Estimated Arrival: ").append(flight.getEstimatedArrival().toString())
+                    .append("\n");
+        }
+
+        return info.toString();
     }
 
-    public static String viewPrivateInfo(Airport source, Airport destination) {
-        ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
-        String info = "";
-//        for (int i = 0; i < flightList.size(); i++) {
-//            if (flightList.get(i).getSource() == source && flightList.get(i).getDestination() == destination
-//                    && flightList.get(i) instanceof NonPrivateFlight) {
-//                temp.add((NonPrivateFlight) flightList.get(i));
-//            }
-//        }
-//        if (temp.isEmpty()) {
-//            info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog";
-//        } else {
-//            for (int i = 0; i < temp.size(); i++) {
-//                info += "Flight: " + temp.get(i).getFlightNumber() + "\n";
-//                info += "Source: " + temp.get(i).getSource().getName() + "\n";
-//                info += "Destination: " + temp.get(i).getDestination().getName() + "\n";
-//                info += "Aircraft ID: " + temp.get(i).getAircraft().getAircraftID() + "\n";
-//                info += "Scheduled Arrival: " + temp.get(i).getScheduledArrival() + "\n";
-//                info += "Actual Departure: " + temp.get(i).getActualDeparture() + "\n";
-//                info += "Estimated Arrival: " + temp.get(i).getEstimatedArrival() + "\n";
-//                try {
-//                    info += "Airline Name: " + temp.get(i).getAircraft().getAirline().getName() + "\n";
-//                } catch (NullPointerException e) {
-//                    info += "There is no Airline associated to the Aircraft of the Flight";
-//                }
-//            }
-//
-//        }
+    public static String viewPrivateInfo(Airport source, Airport destination, Connection conn) {
+        StringBuilder info = new StringBuilder();
+        FlightsDAO fullFlightInfo = new FlightsDAO(conn);
+        AircraftDAO aircraftInfo = new AircraftDAO(conn); // Assuming you have this DAO
+        AirlineDAO airlineInfo = new AirlineDAO(conn); // Assuming you have this DAO
 
-        return info;
+        ArrayList<PrivateFlight> flights = fullFlightInfo.fetchPrivateFlights(source.getId(), destination.getId());
+
+        if (flights.isEmpty()) {
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+        }
+
+        for (PrivateFlight flight : flights) {
+            // Fetching additional details
+            String aircraftCode = aircraftInfo.getAircraftCodeByAircraftId(flight.getAircraftId());
+            long airlineId = aircraftInfo.getAirlineIdByAircraftId(flight.getAircraftId());
+            String airlineName = airlineInfo.getAirlineNameByAirlineId(airlineId);
+
+            info.append("Flight Number: ").append(flight.getFlightNumber())
+                    .append(", Airline: ").append(airlineName)
+                    .append(", Aircraft: ").append(aircraftCode)
+                    .append(", Source: ").append(source.getName())
+                    .append(", Destination: ").append(destination.getName())
+                    .append(", Scheduled Departure: ").append(flight.getScheduledDeparture().toString())
+                    .append(", Actual Departure: ")
+                    .append(flight.getActualDeparture() != null ? flight.getActualDeparture().toString()
+                            : "HAS NOT DEPARTED YET")
+                    .append(", Scheduled Arrival: ").append(flight.getScheduledArrival().toString())
+                    .append(", Estimated Arrival: ").append(flight.getEstimatedArrival().toString())
+                    .append("\n");
+        }
+
+        return info.toString();
     }
 
     public static void main(String[] args) {
@@ -133,6 +145,7 @@ public class Console {
 
             if (username.equals("") && password.equals("")) {
                 type += "Non-registered";
+                System.out.println(type);
             } else {
                 // TODO:set the type depending on the username + password in the database
                 ActorsDAO userDB = new ActorsDAO(conn);
@@ -141,19 +154,23 @@ public class Console {
                     if (info[1].equals("P")) {
                         user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
                         type = "Airport";
+                        System.out.println(type);
                         System.out.println("Logged in as Airport Administrator " + username);
                     } else if (info[1].equals("L")) {
                         user = new AirlineAdministrator(username, password, Long.valueOf(info[3]));
                         type = "Airline";
                         System.out.println("Logged in as Airline Administrator " + username);
+                        System.out.println(type);
                     } else if (info[1].equals("S")) {
                         user = new SystemAdministrator(username, password);
                         type = "System";
                         System.out.println("Logged in as System Administrator " + username);
+                        System.out.println(type);
                     } else if (info[1].equals("R")) {
                         user = new Users(username, password);
                         user.registered = true;
                         type = "Registered";
+                        System.out.println(type);
                     }
                 } else {
                     System.out.println("The info are null");
@@ -162,7 +179,7 @@ public class Console {
             }
 
             switch (type) {
-                case "Aiport":
+                case "Airport":
                     displayAdminOperations();
                     choice = scanner.nextInt();
 
@@ -186,9 +203,16 @@ public class Console {
                             validChoice = true;
 
                         } else if (choice == 2) {
+                            long airportId = user.getAirportLocation();
+                            AirportDAO airportDAO = new AirportDAO(conn);
+                            String airportCode = airportDAO.getAirportCodeById(conn,airportId);
+                            boolean success = registerPrivateFlight(airportCode);
 
-                            // TODO:get user airportCode from database
-                            // TODO:call registerPrivateFlight(airportCode);
+                            if (success) {
+                                System.out.println("New flight was successfully added.");
+                            } else {
+                                System.out.println("Flight was not added. See above error.");
+                            }
 
                             validChoice = true;
 
@@ -211,7 +235,6 @@ public class Console {
                             System.out
                                     .println("Please enter the destination airport of the flight you'd like to view: ");
                             String destinationCode = scanner.nextLine();
-                            System.out.println("dfhvbjd");
 
                             // TODO:find airports in database from the srcCode and destCode
                             // TODO:call correct viewFlightInfo from found airports
@@ -220,8 +243,9 @@ public class Console {
 
                         } else if (choice == 2) {
 
-                            System.out.print("Enter the name of your airline as \"Airline-Name\": ");
-                            boolean success = registerNonPrivateFlight(scanner.next());
+                            System.out.print("Enter the source airport of the flight you'd like to register: ");
+                            String airportCode = scanner.nextLine();
+                            boolean success = registerNonPrivateFlight(airportCode,((AirlineAdministrator)user).getAirline());
                             if (success) {
                                 System.out.println("New flight was successfully added.");
                             } else {
@@ -478,165 +502,152 @@ public class Console {
                 Integer.parseInt(String.valueOf(s.nextToken())));
     }
 
-    private static boolean registerNonPrivateFlight(String airportCode) {
-        Aircraft availableAircraft = null;
-        Airport currentAirport = null;
 
-        // look through list of airports to find the right one
-        // TODO change to database access
-//        for (int i = 0; i < airportList.size(); i++) {
-//            if (airportList.get(i).getCode().equals(airportCode)) {
-//                currentAirport = airportList.get(i);
-//                // once found, check if this airport has any available aircrafts
-//                availableAircraft = airportList.get(i).checkAvailableAircraft();
-//                // if an aircraft is found we can continue with the flight registration no need
-//                // to keep looping
-//                if (availableAircraft != null) {
-//                    break;
-//                }
-//            }
-//        }
+    private static boolean registerNonPrivateFlight(String airportCode, long airlineID) {
+        Connection conn = DatabaseConnector.connect();
+        AirportDAO airportDAO = new AirportDAO(conn);
+        AircraftDAO aircraftDAO = new AircraftDAO(conn);
+        FlightsDAO flightDAO = new FlightsDAO(conn);
 
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn,airportCode); //available aircraft in airport
+        Airport currentAirport = airportDAO.getAirportByAirportCode(conn,airportCode);
+        boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(conn, airlineID); //available aircraft in the airline
         // don't continue if no aircraft was found
-//        if (availableAircraft == null) {
-//            System.out.println("Unable to register a new flight since no aircrafts are currently available.");
-//            return false;
-//        } else {
-//            boolean alreaydExists = false;// used to hold T/F if the time for departure/arrival already exists
-//            LocalDateTime dateTime = null;
-//
-//            System.out.print("Enter a date and time of departure for this flight: (yyyy-MM-dd-HH-mm-ss): ");
-//            StringTokenizer timeInput = new StringTokenizer(scanner.next(), "-");
-//            dateTime = convertToLocalDateTime(timeInput);
-//
-//            // get the flights that are departing from this airport
-//            ArrayList<PrivateFlight> existingFlights = currentAirport.getListOfFlights();
-//
-//            // check if any flights are departing at the same time
-//            for (int i = 0; i < existingFlights.size(); i++) {
-//                if (existingFlights.get(i).getScheduledDeparture() == dateTime) {
-//                    alreaydExists = true;
-//                    break;
-//                }
-//            }
-//
-//            if (alreaydExists) {
-//                System.out.println(
-//                        "Cannot register this flight because a flight is already departing or landing at the same time.");
-//                return false;
-//            }
-//
-//            // if for loop wasn't broken then all the flights were fine
-//            // check for arrival time and airport
-//            System.out.print("Enter the destination airport code of this flight: ");
-//            String destCode = scanner.next();
-//            LocalDateTime arrDateTime = null;
-//
-//            Airport destAirport = findAirport(destCode);
-//            if (destAirport != null) {
-//                System.out.print("Enter the arrival time for this flight: ");
-//                arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
-//                // check for a flight with same destination AND arrival time
-//                for (int i = 0; i < flightList.size(); i++) {
-//                    if (flightList.get(i).getDestination().equals(destAirport)
-//                            && flightList.get(i).getScheduledArrival().equals(dateTime)) {
-//                        System.out.print(
-//                                "Cannot register this flight because a flight is already landing at the same airport at this time.");
-//                        return false;
-//                    }
-//                }
-//                // none were found so we can create flight and register it
-//                PrivateFlight newFlight = new PrivateFlight(currentAirport, destAirport, dateTime, arrDateTime, null,
-//                        null, availableAircraft);
-//                flightList.add(newFlight);
-//                return true;
-//            } else {
-//                System.out.print("Cannot register this flight because no airport exists with this code.");
-//                return false;
-//            }
-//        }
-        return false;
+
+        if (availableAircraft == null || !airlineHasAircraft) {
+            System.out.println("Unable to register a new flight since no aircrafts are currently available.");
+            return false;
+        } else {
+            boolean alreaydExists = false;// used to hold T/F if the time for departure/arrival already exists
+            LocalDateTime dateTime = null;
+
+            System.out.print("Enter a date and time of departure for this flight: (yyyy-MM-dd-HH-mm-ss): ");
+            StringTokenizer timeInput = new StringTokenizer(scanner.next(), "-");
+            dateTime = convertToLocalDateTime(timeInput);
+
+            // get the flights that are departing from this airport
+            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId()) ;
+
+            // check if any flights are departing at the same time
+            for (int i = 0; i < existingFlights.size(); i++) {
+                if (existingFlights.get(i).getScheduledDeparture() == dateTime) {
+                    alreaydExists = true;
+                    break;
+                }
+            }
+
+            if (alreaydExists) {
+                System.out.println(
+                        "Cannot register this flight because a flight is already departing or landing at the same time.");
+                return false;
+            }
+
+            // if for loop wasn't broken then all the flights were fine
+            // check for arrival time and airport
+
+            System.out.print("Enter the destination airport code of this flight: ");
+            String destCode = scanner.next();
+            LocalDateTime arrDateTime = null;
+
+
+            Airport destAirport = airportDAO.getAirportByAirportCode(conn,destCode);
+            if (destAirport != null) {
+                System.out.print("Enter the arrival time for this flight: ");
+                arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
+                // check for a flight with same destination AND arrival time
+                boolean sameDest = FlightsDAO.hasFlightWithDestinationAirport(conn, destAirport.getId());
+                boolean sameTime = FlightsDAO.hasFlightWithScheduledArrival(conn, arrDateTime);
+                for (int i = 0; i < flightList.size(); i++) {
+                    if (sameDest && sameTime) {
+                        System.out.print(
+                                "Cannot register this flight because a flight is already landing at the same airport at this time.");
+                        return false;
+                    }
+                }
+
+                System.out.println("Enter the type of the flight: ");
+                String flightType = scanner.nextLine();
+                // none were found so we can create flight and register it
+                flightDAO.registerNonPrivateFlight(conn,"AC 456", currentAirport.getId(),destAirport.getId(),dateTime,arrDateTime,null,null,availableAircraft.getId(),FlightTypes.valueOf(flightType));
+                return true;
+            } else {
+                System.out.print("Cannot register this flight because no airport exists with this code.");
+                return false;
+            }
+        }
     }
 
     private static boolean registerPrivateFlight(String airportCode) {
-//        Aircraft availableAircraft = null;
-//        Airport currentAirport = null;
-//
-//        // look through list of airports to find the right one
-//        // TODO change to database access
-//        for (int i = 0; i < airportList.size(); i++) {
-//            if (airportList.get(i).getCode().equals(airportCode)) {
-//                currentAirport = airportList.get(i);
-//                // once found, check if this airport has any available aircrafts
-//                availableAircraft = airportList.get(i).checkAvailableAircraft();
-//                // if an aircraft is found we can continue with the flight registration no need
-//                // to keep looping
-//                if (availableAircraft != null) {
-//                    break;
-//                }
-//            }
-//        }
-//
-//        // don't continue if no aircraft was found
-//        if (availableAircraft == null) {
-//            System.out.println("Unable to register a new flight since no aircrafts are currently available.");
-//            return false;
-//        } else {
-//            boolean alreaydExists = false;// used to hold T/F if the time for departure/arrival already exists
-//            LocalDateTime dateTime = null;
-//
-//            System.out.print("Enter a date and time of departure for this flight: (yyyy-MM-dd-HH-mm-ss): ");
-//            StringTokenizer timeInput = new StringTokenizer(scanner.next(), "-");
-//            dateTime = convertToLocalDateTime(timeInput);
-//
-//            // get the flights that are departing from this airport
-//            ArrayList<PrivateFlight> existingFlights = currentAirport.getListOfFlights();
-//
-//            // check if any flights are departing at the same time
-//            for (int i = 0; i < existingFlights.size(); i++) {
-//                if (existingFlights.get(i).getScheduledDeparture() == dateTime) {
-//                    alreaydExists = true;
-//                    break;
-//                }
-//            }
-//
-//            if (alreaydExists) {
-//                System.out.println(
-//                        "Cannot register this flight because a flight is already departing or landing at the same time.");
-//                return false;
-//            }
-//
-//            // if for loop wasn't broken then all the flights were fine
-//            // check for arrival time and airport
-//            System.out.print("Enter the destination airport code of this flight: ");
-//            String destCode = scanner.next();
-//            LocalDateTime arrDateTime = null;
-//
-//            Airport destAirport = findAirport(destCode);
-//            if (destAirport != null) {
-//                System.out.print("Enter the arrival time for this flight: ");
-//                arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
-//                // check for a flight with same destination AND arrival time
-//                for (int i = 0; i < flightList.size(); i++) {
-//                    if (flightList.get(i).getDestination().equals(destAirport)
-//                            && flightList.get(i).getScheduledArrival().equals(dateTime)) {
-//                        System.out.print(
-//                                "Cannot register this flight because a flight is already landing at the same airport at this time.");
-//                        return false;
-//                    }
-//                }
-//                // none were found so we can create flight and register it
-//                PrivateFlight newFlight = new PrivateFlight(currentAirport, destAirport, dateTime, arrDateTime, null,
-//                        null, availableAircraft);
-//                flightList.add(newFlight);
-//                return true;
-//            } else {
-//                System.out.print("Cannot register this flight because no airport exists with this code.");
-//                return false;
-//            }
-//
-//        }
-        return false;
+        Connection conn = DatabaseConnector.connect();
+        AirportDAO airportDAO = new AirportDAO(conn);
+        AircraftDAO aircraftDAO = new AircraftDAO(conn);
+        FlightsDAO flightDAO = new FlightsDAO(conn);
+
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn,airportCode);
+        Airport currentAirport = airportDAO.getAirportByAirportCode(conn,airportCode);
+
+
+        // don't continue if no aircraft was found
+        if (availableAircraft == null) {
+            System.out.println("Unable to register a new flight since no aircrafts are currently available.");
+            return false;
+        } else {
+            boolean alreaydExists = false;// used to hold T/F if the time for departure/arrival already exists
+            LocalDateTime dateTime = null;
+
+            System.out.print("Enter a date and time of departure for this flight: (yyyy-MM-dd-HH-mm-ss): ");
+            StringTokenizer timeInput = new StringTokenizer(scanner.next(), "-");
+            dateTime = convertToLocalDateTime(timeInput);
+
+            // get the flights that are departing from this airport
+            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId()) ;
+
+            // check if any flights are departing at the same time
+            for (int i = 0; i < existingFlights.size(); i++) {
+                if (existingFlights.get(i).getScheduledDeparture() == dateTime) {
+                    alreaydExists = true;
+                    break;
+                }
+            }
+
+            if (alreaydExists) {
+                System.out.println(
+                        "Cannot register this flight because a flight is already departing or landing at the same time.");
+                return false;
+            }
+
+            // if for loop wasn't broken then all the flights were fine
+            // check for arrival time and airport
+            System.out.print("Enter the destination airport code of this flight: ");
+            String destCode = scanner.next();
+            LocalDateTime arrDateTime = null;
+
+
+            Airport destAirport = airportDAO.getAirportByAirportCode(conn,destCode);
+            if (destAirport != null) {
+                System.out.print("Enter the arrival time for this flight: ");
+                arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
+                // check for a flight with same destination AND arrival time
+                boolean sameDest = FlightsDAO.hasFlightWithDestinationAirport(conn, destAirport.getId());
+                boolean sameTime = FlightsDAO.hasFlightWithScheduledArrival(conn, arrDateTime);
+                for (int i = 0; i < flightList.size(); i++) {
+                    if (sameDest && sameTime) {
+                        System.out.print(
+                                "Cannot register this flight because a flight is already landing at the same airport at this time.");
+                        return false;
+                    }
+                }
+
+                // none were found so we can create flight and register it
+                flightDAO.registerPrivateFlight(conn,"AC 456", currentAirport.getId(),destAirport.getId(),dateTime,arrDateTime,null,null,availableAircraft.getId());
+                return true;
+            } else {
+                System.out.print("Cannot register this flight because no airport exists with this code.");
+                return false;
+            }
+
+        }
+
     }
 
     private static void displayAdminOperations() {
