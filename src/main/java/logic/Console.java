@@ -57,6 +57,7 @@ public class Console {
         return info.toString();
     }
 
+
     // Who: Registered Users
     // What: full flight info: flightNumber, source, destination, airline, aircraft,
     // scheduledDeparture, scheduledArrival
@@ -300,9 +301,19 @@ public class Console {
                             validChoice = true;
 
                         } else if (choice == 2) {
-
                             // TODO:create enter record on airport method
                             validChoice = true;
+                            System.out.print("Enter an Airport name: ");
+                            scanner.nextLine();
+                            String name = scanner.nextLine();
+
+                            System.out.print("Enter the city and country where " + name + " is located as comma seperated values: ");
+                            //scanner.nextLine();
+                            String location = scanner.nextLine();
+                            StringTokenizer st = new StringTokenizer(location, ",");
+
+                            addAirportRecord(name, st.nextToken(), st.nextToken(), conn);
+
 
                         } else {
 
@@ -388,6 +399,7 @@ public class Console {
                 Integer.parseInt(String.valueOf(s.nextToken())));
     }
 
+
     private static boolean registerNonPrivateFlight(String airportCode, long airlineID) {
         Connection conn = DatabaseConnector.connect();
         AirportDAO airportDAO = new AirportDAO(conn);
@@ -400,6 +412,7 @@ public class Console {
         boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(airlineID); // available aircraft in the
                                                                                    // airline
         // don't continue if no aircraft was found
+
         if (availableAircraft == null || !airlineHasAircraft) {
             System.out.println("Unable to register a new flight since no aircrafts are currently available.");
             return false;
@@ -533,6 +546,7 @@ public class Console {
             }
 
         }
+
     }
 
     private static void displayAdminOperations() {
@@ -541,8 +555,30 @@ public class Console {
                 "\n2. Register a New Flight");
     }
 
-    private static void generateAccounts() {
-        accounts.add(new Users("naika", "123"));
-        accounts.add(new Users("asmae", "123"));
+    private static void addAirportRecord(String name, String city, String Country, Connection connection){
+
+        CityDAO cityData = new CityDAO(connection);
+        //get the id city input
+        long cityId = cityData.getCityID(city);
+
+        //if the city doesn't already exist
+        if (cityId == 0){
+            //request temperature info for the city
+            System.out.print("Enter the current temperature info of this city: ");
+            Double temp = scanner.nextDouble();
+            //create entry for the city
+            cityId = cityData.registerCity(city,Country, temp);
+        }
+
+        //create entry for the airport
+        AirportDAO airportData = new AirportDAO(connection);
+        System.out.println("Enter a three letter code for the airport: ");
+        //scanner.nextLine();
+
+        String code = scanner.next();
+        airportData.registerAirport(cityId, name, code);
+
+        System.out.println("New airport was successfully added to the database.");
     }
+
 }
