@@ -146,7 +146,7 @@ public class FlightsDAO {
         return flights;
     }
 
-    public boolean hasFlightWithDestinationAirport(Connection conn, long destinationAirportID) {
+    public boolean hasFlightWithDestinationAirport(long destinationAirportID) {
         boolean hasFlight = false;
         String sql = "SELECT COUNT(*) FROM Flight WHERE destinationAirport = ?";
 
@@ -166,7 +166,7 @@ public class FlightsDAO {
         return hasFlight;
     }
 
-    public boolean hasFlightWithScheduledArrival(Connection conn, LocalDateTime scheduledArrival) {
+    public boolean hasFlightWithScheduledArrival(LocalDateTime scheduledArrival) {
         boolean hasFlight = false;
         String sql = "SELECT COUNT(*) FROM Flight WHERE scheduleArrival = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
