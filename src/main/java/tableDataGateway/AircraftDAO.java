@@ -30,12 +30,30 @@ public class AircraftDAO {
                 Long airlineID = (long) rs.getInt("airlineID");
                 Long airportID = (long) rs.getInt("airportID");
                 aircraft = new Aircraft(id,location, aircraftCode,airlineID,airportID );
+              
+         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+                  return aircraft;
+    }
 
+
+
+    public String getAircraftCodeByAircraftId(long aircraftID) {
+        String sql = "SELECT aircraftCode FROM Aircraft WHERE id = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, aircraftID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("aircraftCode");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return aircraft;
+      return null;
     }
 
     public static boolean hasAircraftsInAirline(Connection conn, long airlineID) {
@@ -51,13 +69,30 @@ public class AircraftDAO {
                 if (count > 0) {
                     hasAircrafts = true;
                 }
-            }
+              
+               }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return hasAircrafts;
     }
+   
 
+    public long getAirlineIdByAircraftId(long aircraftID) {
+        String sql = "SELECT airlineID FROM Aircraft WHERE id = ?";
 
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, aircraftID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getLong("airlineID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
 
 }

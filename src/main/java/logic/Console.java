@@ -20,97 +20,105 @@ public class Console {
     private static ArrayList<Airport> airportList = new ArrayList<Airport>();
     private static ArrayList<Airline> airlinesList = new ArrayList<>();
 
-//    public static String viewBasicInfo(Airport source, Airport destination) {
-//        ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
-//        String info = "";
-//        for (int i = 0; i < flightList.size(); i++) {
-//            if (flightList.get(i).getSource() == source &&
-//                    flightList.get(i).getDestination() == destination
-//                    && flightList.get(i) instanceof NonPrivateFlight) {
-//                temp.add((NonPrivateFlight) flightList.get(i));
-//            }
-//        }
-//        if (temp.isEmpty()) {
-//            info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog or there is no Non-Private flights in the catalog.";
-//        } else {
-//            for (int i = 0; i < temp.size(); i++) {
-//                info += "Flight: " + temp.get(i).getFlightNumber() + "\n";
-//                info += "Source: " + temp.get(i).getSource().getName() + "\n";
-//                info += "Destination: " + temp.get(i).getDestination().getName() + "\n";
-//                info += "Scheduled Departure: " + temp.get(i).getScheduledDeparture() + "\n";
-//                info += "Scheduled Arrival: " + temp.get(i).getScheduledArrival() + "\n";
-//                info += "Actual Departure: " + temp.get(i).getActualDeparture() + "\n";
-//                info += "Estimated Arrival: " + temp.get(i).getEstimatedArrival() + "\n";
-//            }
-//
-//        }
-//
-//        return info;
-//    }
-//
-//    public static String viewFullInfo(Airport source, Airport destination) {
-//        ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
-//        String info = "";
-//        for (int i = 0; i < flightList.size(); i++) {
-//            if (flightList.get(i).getSource() == source && flightList.get(i).getDestination() == destination
-//                    && flightList.get(i) instanceof NonPrivateFlight) {
-//                temp.add((NonPrivateFlight) flightList.get(i));
-//            }
-//        }
-//        if (temp.isEmpty()) {
-//            info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog or there is no Non-Private flights in the catalog.";
-//        } else {
-//            for (int i = 0; i < temp.size(); i++) {
-//                info += "Flight: " + temp.get(i).getFlightNumber() + "\n";
-//                info += "Source: " + temp.get(i).getSource().getName() + "\n";
-//                info += "Destination: " + temp.get(i).getDestination().getName() + "\n";
-//                info += "Aircraft ID: " + temp.get(i).getAircraft().getAircraftID() + "\n";
-//                info += "Scheduled Arrival: " + temp.get(i).getScheduledArrival() + "\n";
-//                info += "Actual Departure: " + temp.get(i).getActualDeparture() + "\n";
-//                info += "Estimated Arrival: " + temp.get(i).getEstimatedArrival() + "\n";
-//                try {
-//                    info += "Airline Name: " + temp.get(i).getAircraft().getAirline().getName() + "\n";
-//                } catch (NullPointerException e) {
-//                    info += "There is no Airline associated to the Aircraft of the Flight";
-//                }
-//            }
-//
-//        }
-//
-//        return info;
-//    }
-//
-//    public static String viewPrivateInfo(Airport source, Airport destination) {
-//        ArrayList<NonPrivateFlight> temp = new ArrayList<NonPrivateFlight>();
-//        String info = "";
-//        for (int i = 0; i < flightList.size(); i++) {
-//            if (flightList.get(i).getSource() == source && flightList.get(i).getDestination() == destination
-//                    && flightList.get(i) instanceof NonPrivateFlight) {
-//                temp.add((NonPrivateFlight) flightList.get(i));
-//            }
-//        }
-//        if (temp.isEmpty()) {
-//            info += "ERROR: There is no flight that matches the Source/Destination Airport in the flight catalog";
-//        } else {
-//            for (int i = 0; i < temp.size(); i++) {
-//                info += "Flight: " + temp.get(i).getFlightNumber() + "\n";
-//                info += "Source: " + temp.get(i).getSource().getName() + "\n";
-//                info += "Destination: " + temp.get(i).getDestination().getName() + "\n";
-//                info += "Aircraft ID: " + temp.get(i).getAircraft().getAircraftID() + "\n";
-//                info += "Scheduled Arrival: " + temp.get(i).getScheduledArrival() + "\n";
-//                info += "Actual Departure: " + temp.get(i).getActualDeparture() + "\n";
-//                info += "Estimated Arrival: " + temp.get(i).getEstimatedArrival() + "\n";
-//                try {
-//                    info += "Airline Name: " + temp.get(i).getAircraft().getAirline().getName() + "\n";
-//                } catch (NullPointerException e) {
-//                    info += "There is no Airline associated to the Aircraft of the Flight";
-//                }
-//            }
-//
-//        }
-//
-//        return info;
-//    }
+    // Who: All users
+    // What: basic flight info: flightNumber, source, destination
+    // Which Flights: Non-Private Flights
+    public static String viewBasicInfo(Airport source, Airport destination, Connection conn) {
+        StringBuilder info = new StringBuilder();
+        FlightsDAO basicFlightInfo = new FlightsDAO(conn);
+
+        ArrayList<NonPrivateFlight> flights = basicFlightInfo.fetchNonPrivateFlights(source.getId(),
+                destination.getId());
+
+        if (flights.isEmpty()) {
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+        }
+
+        for (NonPrivateFlight flight : flights) {
+            info.append("Flight Number: ").append(flight.getFlightNumber())
+                    .append(", Source: ").append(source.getName())
+                    .append(", Destination: ").append(destination.getName())
+                    .append("\n");
+        }
+
+        return info.toString();
+    }
+
+    // Who: Registered Users
+    // What: full flight info: flightNumber, source, destination, airline, aircraft,
+    // scheduledDeparture, scheduledArrival
+    // Which Flights: Non-Private Flights.
+    public static String viewFullInfo(Airport source, Airport destination, Connection conn) {
+        StringBuilder info = new StringBuilder();
+        FlightsDAO fullFlightInfo = new FlightsDAO(conn);
+        AircraftDAO aircraftInfo = new AircraftDAO(conn); // Assuming you have this DAO
+        AirlineDAO airlineInfo = new AirlineDAO(conn); // Assuming you have this DAO
+
+        ArrayList<NonPrivateFlight> flights = fullFlightInfo.fetchNonPrivateFlights(source.getId(),
+                destination.getId());
+
+        if (flights.isEmpty()) {
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+        }
+
+        for (NonPrivateFlight flight : flights) {
+            // Fetching additional details
+            String aircraftCode = aircraftInfo.getAircraftCodeByAircraftId(flight.getAircraftId());
+            long airlineId = aircraftInfo.getAirlineIdByAircraftId(flight.getAircraftId());
+            String airlineName = airlineInfo.getAirlineNameByAirlineId(airlineId);
+
+            info.append("Flight Number: ").append(flight.getFlightNumber())
+                    .append(", Airline: ").append(airlineName)
+                    .append(", Aircraft: ").append(aircraftCode)
+                    .append(", Flight Type: ").append(flight.getFlightType().toString())
+                    .append(", Source: ").append(source.getName())
+                    .append(", Destination: ").append(destination.getName())
+                    .append(", Scheduled Departure: ").append(flight.getScheduledDeparture().toString())
+                    .append(", Actual Departure: ")
+                    .append(flight.getActualDeparture() != null ? flight.getActualDeparture().toString()
+                            : "HAS NOT DEPARTED YET")
+                    .append(", Scheduled Arrival: ").append(flight.getScheduledArrival().toString())
+                    .append(", Estimated Arrival: ").append(flight.getEstimatedArrival().toString())
+                    .append("\n");
+        }
+
+        return info.toString();
+    }
+
+    public static String viewPrivateInfo(Airport source, Airport destination, Connection conn) {
+        StringBuilder info = new StringBuilder();
+        FlightsDAO fullFlightInfo = new FlightsDAO(conn);
+        AircraftDAO aircraftInfo = new AircraftDAO(conn); // Assuming you have this DAO
+        AirlineDAO airlineInfo = new AirlineDAO(conn); // Assuming you have this DAO
+
+        ArrayList<PrivateFlight> flights = fullFlightInfo.fetchPrivateFlights(source.getId(), destination.getId());
+
+        if (flights.isEmpty()) {
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+        }
+
+        for (PrivateFlight flight : flights) {
+            // Fetching additional details
+            String aircraftCode = aircraftInfo.getAircraftCodeByAircraftId(flight.getAircraftId());
+            long airlineId = aircraftInfo.getAirlineIdByAircraftId(flight.getAircraftId());
+            String airlineName = airlineInfo.getAirlineNameByAirlineId(airlineId);
+
+            info.append("Flight Number: ").append(flight.getFlightNumber())
+                    .append(", Airline: ").append(airlineName)
+                    .append(", Aircraft: ").append(aircraftCode)
+                    .append(", Source: ").append(source.getName())
+                    .append(", Destination: ").append(destination.getName())
+                    .append(", Scheduled Departure: ").append(flight.getScheduledDeparture().toString())
+                    .append(", Actual Departure: ")
+                    .append(flight.getActualDeparture() != null ? flight.getActualDeparture().toString()
+                            : "HAS NOT DEPARTED YET")
+                    .append(", Scheduled Arrival: ").append(flight.getScheduledArrival().toString())
+                    .append(", Estimated Arrival: ").append(flight.getEstimatedArrival().toString())
+                    .append("\n");
+        }
+
+        return info.toString();
+    }
 
     public static void main(String[] args) {
         // Establish a connection to the database
