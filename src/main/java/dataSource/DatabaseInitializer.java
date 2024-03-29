@@ -67,6 +67,7 @@ public class DatabaseInitializer {
         executeUpdate(conn, sql);
     }
 
+    // Discriminator: p for private, np for non-private
     private static void createFlightTable(Connection conn) {
         String sql = "CREATE TABLE IF NOT EXISTS Flight (" +
                 "id INTEGER PRIMARY KEY, " +
@@ -80,6 +81,7 @@ public class DatabaseInitializer {
                 "scheduleArrival DATETIME, " +
                 "actualDepart DATETIME, " +
                 "actualArrival DATETIME, " +
+                "flightType TEXT, " +
                 "FOREIGN KEY(aircraftID) REFERENCES Aircraft(id), " +
                 "FOREIGN KEY(sourceAirport) REFERENCES Airport(id), " +
                 "FOREIGN KEY(destinationAirport) REFERENCES Airport(id));";

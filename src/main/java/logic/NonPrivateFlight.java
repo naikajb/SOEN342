@@ -1,14 +1,11 @@
 package logic;
 
 import java.time.LocalDateTime;
-
-enum Types {
-    COMMERCIAL, CARGO;
-}
+import logic.FlightTypes;
 
 public class NonPrivateFlight extends Flight {
 
-    private Types type; // enum: COMMERCIAL, CARGO
+    private FlightTypes flightType; // enum: COMMERCIAL, CARGO
 
     // TODO: generate the flight number w/ format "AC-365"
     public NonPrivateFlight(
@@ -21,10 +18,10 @@ public class NonPrivateFlight extends Flight {
             LocalDateTime actualDeparture,
             LocalDateTime estimatedArrival,
             long aircraftId,
-            Types type) {
+            FlightTypes flightType) {
         super(id, flightNumber, sourceAirport, destinationAirport, scheduledDeparture, scheduledArrival,
                 actualDeparture, estimatedArrival, aircraftId);
-        this.type = type;
+        this.flightType = flightType;
     }
 
 }
