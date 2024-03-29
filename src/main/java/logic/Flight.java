@@ -56,7 +56,7 @@ public abstract class Flight {
         return estimatedArrival;
     }
 
-    public long getAircraft() {
+    public long getAircraftId() {
         return aircraftId;
     }
 
