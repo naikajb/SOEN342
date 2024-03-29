@@ -489,7 +489,7 @@ public class Console {
         Airport currentAirport = null;
 
         // look through list of airports to find the right one
-        // TODO change to database access
+        // TODO: change to database access
         for (int i = 0; i < airportList.size(); i++) {
             if (airportList.get(i).getCode().equals(airportCode)) {
                 currentAirport = airportList.get(i);
@@ -568,7 +568,7 @@ public class Console {
         Airport currentAirport = null;
 
         // look through list of airports to find the right one
-        // TODO change to database access
+        // TODO: change to database access
         for (int i = 0; i < airportList.size(); i++) {
             if (airportList.get(i).getCode().equals(airportCode)) {
                 currentAirport = airportList.get(i);
