@@ -215,7 +215,7 @@ public class Console {
                         } else if (choice == 2) {
                             long airportId = user.getAirportLocation();
                             AirportDAO airportDAO = new AirportDAO(conn);
-                            String airportCode = airportDAO.getAirportCodeById(conn, airportId);
+                            String airportCode = airportDAO.getAirportCodeById(airportId);
                             boolean success = registerPrivateFlight(airportCode);
 
                             if (success) {
@@ -394,11 +394,11 @@ public class Console {
         AircraftDAO aircraftDAO = new AircraftDAO(conn);
         FlightsDAO flightDAO = new FlightsDAO(conn);
 
-        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn, airportCode); // available aircraft in
-                                                                                               // airport
-        Airport currentAirport = airportDAO.getAirportByAirportCode(conn, airportCode);
-        boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(conn, airlineID); // available aircraft in the
-                                                                                         // airline
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(airportCode); // available aircraft in
+                                                                                         // airport
+        Airport currentAirport = airportDAO.getAirportByAirportCode(airportCode);
+        boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(airlineID); // available aircraft in the
+                                                                                   // airline
         // don't continue if no aircraft was found
         if (availableAircraft == null || !airlineHasAircraft) {
             System.out.println("Unable to register a new flight since no aircrafts are currently available.");
@@ -412,7 +412,7 @@ public class Console {
             dateTime = convertToLocalDateTime(timeInput);
 
             // get the flights that are departing from this airport
-            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId());
+            ArrayList<Flight> existingFlights = flightDAO.getFlightsDepartingFromAirport(currentAirport.getId());
 
             // check if any flights are departing at the same time
             for (int i = 0; i < existingFlights.size(); i++) {
@@ -435,13 +435,14 @@ public class Console {
             String destCode = scanner.next();
             LocalDateTime arrDateTime = null;
 
-            Airport destAirport = airportDAO.getAirportByAirportCode(conn, destCode);
+            Airport destAirport = airportDAO.getAirportByAirportCode(destCode);
             if (destAirport != null) {
                 System.out.print("Enter the arrival time for this flight: ");
                 arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
                 // check for a flight with same destination AND arrival time
-                boolean sameDest = FlightsDAO.hasFlightWithDestinationAirport(conn, destAirport.getId());
-                boolean sameTime = FlightsDAO.hasFlightWithScheduledArrival(conn, arrDateTime);
+
+                boolean sameDest = flightDAO.hasFlightWithDestinationAirport(destAirport.getId());
+                boolean sameTime = flightDAO.hasFlightWithScheduledArrival(arrDateTime);
                 for (int i = 0; i < flightList.size(); i++) {
                     if (sameDest && sameTime) {
                         System.out.print(
@@ -469,8 +470,8 @@ public class Console {
         AircraftDAO aircraftDAO = new AircraftDAO(conn);
         FlightsDAO flightDAO = new FlightsDAO(conn);
 
-        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn, airportCode);
-        Airport currentAirport = airportDAO.getAirportByAirportCode(conn, airportCode);
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(airportCode);
+        Airport currentAirport = airportDAO.getAirportByAirportCode(airportCode);
 
         // don't continue if no aircraft was found
         if (availableAircraft == null) {
@@ -485,7 +486,7 @@ public class Console {
             dateTime = convertToLocalDateTime(timeInput);
 
             // get the flights that are departing from this airport
-            ArrayList<Flight> existingFlights = FlightsDAO.getFlightsDepartingFromAirport(conn, currentAirport.getId());
+            ArrayList<Flight> existingFlights = flightDAO.getFlightsDepartingFromAirport(currentAirport.getId());
 
             // check if any flights are departing at the same time
             for (int i = 0; i < existingFlights.size(); i++) {
@@ -507,13 +508,13 @@ public class Console {
             String destCode = scanner.next();
             LocalDateTime arrDateTime = null;
 
-            Airport destAirport = airportDAO.getAirportByAirportCode(conn, destCode);
+            Airport destAirport = airportDAO.getAirportByAirportCode(destCode);
             if (destAirport != null) {
                 System.out.print("Enter the arrival time for this flight: ");
                 arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
                 // check for a flight with same destination AND arrival time
-                boolean sameDest = FlightsDAO.hasFlightWithDestinationAirport(conn, destAirport.getId());
-                boolean sameTime = FlightsDAO.hasFlightWithScheduledArrival(conn, arrDateTime);
+                boolean sameDest = flightDAO.hasFlightWithDestinationAirport(destAirport.getId());
+                boolean sameTime = flightDAO.hasFlightWithScheduledArrival(arrDateTime);
                 for (int i = 0; i < flightList.size(); i++) {
                     if (sameDest && sameTime) {
                         System.out.print(
