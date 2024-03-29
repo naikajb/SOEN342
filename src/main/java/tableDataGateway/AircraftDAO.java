@@ -38,5 +38,26 @@ public class AircraftDAO {
         return aircraft;
     }
 
+    public static boolean hasAircraftsInAirline(Connection conn, long airlineID) {
+        boolean hasAircrafts = false;
+        try {
+            String sql = "SELECT COUNT(*) FROM Aircraft WHERE airlineID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, airlineID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    hasAircrafts = true;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return hasAircrafts;
+    }
+
+
 
 }

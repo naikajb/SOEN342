@@ -234,8 +234,9 @@ public class Console {
 
                         } else if (choice == 2) {
 
-                            System.out.print("Enter the name of your airline as \"Airline-Name\": ");
-                            boolean success = registerNonPrivateFlight(scanner.next());
+                            System.out.print("Enter the source airport of the flight you'd like to register: ");
+                            String airportCode = scanner.nextLine();
+                            boolean success = registerNonPrivateFlight(airportCode,((AirlineAdministrator)user).getAirline());
                             if (success) {
                                 System.out.println("New flight was successfully added.");
                             } else {
@@ -482,17 +483,17 @@ public class Console {
                 Integer.parseInt(String.valueOf(s.nextToken())));
     }
 
-    private static boolean registerNonPrivateFlight(String airportCode) {
+    private static boolean registerNonPrivateFlight(String airportCode, long airlineID) {
         Connection conn = DatabaseConnector.connect();
         AirportDAO airportDAO = new AirportDAO(conn);
         AircraftDAO aircraftDAO = new AircraftDAO(conn);
         FlightsDAO flightDAO = new FlightsDAO(conn);
 
-        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn,airportCode);
+        Aircraft availableAircraft = aircraftDAO.findAircraftByAirportCode(conn,airportCode); //available aircraft in airport
         Airport currentAirport = airportDAO.getAirportByAirportCode(conn,airportCode);
-
+        boolean airlineHasAircraft = aircraftDAO.hasAircraftsInAirline(conn, airlineID); //available aircraft in the airline
         // don't continue if no aircraft was found
-        if (availableAircraft == null) {
+        if (availableAircraft == null || !airlineHasAircraft) {
             System.out.println("Unable to register a new flight since no aircrafts are currently available.");
             return false;
         } else {
