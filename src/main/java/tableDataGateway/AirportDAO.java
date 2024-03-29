@@ -57,6 +57,28 @@ public class AirportDAO {
         return null; // Airport not found or error occurred
     }
 
+
+    public void registerAirport(long cityId, String airportName, String airportCode){
+        String sql;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try{
+            sql = "INSERT INTO Airport (name, AirportCode, CityID) VALUES (?, ?, ?)";
+            statement = conn.prepareStatement(sql);
+
+            // Set parameters
+            statement.setString(1, airportName);
+            statement.setString(2, airportCode);
+            statement.setDouble(3, cityId);
+
+            statement.executeUpdate();
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
     public static Airport getAirportByAirportCode(Connection conn, String airportCode) {
         Airport airport = null;
         try {
@@ -94,7 +116,5 @@ public class AirportDAO {
         }
         return airportCode;
     }
-
-
 
 }
