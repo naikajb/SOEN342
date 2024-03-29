@@ -16,7 +16,7 @@ public class CityDAO {
 
     // Get CityID by given City Name
     public Long getCityIdByName(String cityName) {
-        String sql = "SELECT id FROM City WHERE name = ?";
+        String sql = "SELECT id FROM City WHERE name = \'" + cityName +"\';";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, cityName);
             ResultSet rs = pstmt.executeQuery();
