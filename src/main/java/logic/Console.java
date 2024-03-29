@@ -372,15 +372,6 @@ public class Console {
         }
     }
 
-    private static Airport findAirport(String code) {
-        for (int i = 0; i < airportList.size(); i++) {
-            if (airportList.get(i).getCode().equals(code)) {
-                return airportList.get(i);
-            }
-        }
-        return null;
-    }
-
     public static LocalDateTime convertToLocalDateTime(StringTokenizer s) {
         return LocalDateTime.of(Integer.parseInt(String.valueOf(s.nextToken())),
                 Integer.parseInt(String.valueOf(s.nextToken())),
