@@ -20,6 +20,13 @@ public class Console {
     private static ArrayList<Airport> airportList = new ArrayList<Airport>();
     private static ArrayList<Airline> airlinesList = new ArrayList<>();
 
+    // Get Airport Object by City Name
+    public static Airport getAirportObjectByCityName(String cityName, Connection conn) {
+        MultiTableFct airportForCity = new MultiTableFct(conn);
+
+        return airportForCity.getAirportObjectByCityName(cityName);
+    }
+
     // Get user info:
     public static String[] getUserInfo(String username, String password, Connection conn) {
         ActorsDAO userDB = new ActorsDAO(conn);
@@ -198,9 +205,8 @@ public class Console {
                             String destinationCity = scanner.next();
 
                             // Find airports in database from the srcCode and destCode
-                            MultiTableFct airportForCity = new MultiTableFct(conn);
-                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
-                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
                             // TODO:call correct viewFlightInfo from found airports
 
@@ -241,9 +247,8 @@ public class Console {
                             String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
-                            MultiTableFct airportForCity = new MultiTableFct(conn);
-                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
-                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
                             // TODO:call correct viewFlightInfo from found airports
 
@@ -287,9 +292,8 @@ public class Console {
                             String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
-                            MultiTableFct airportForCity = new MultiTableFct(conn);
-                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
-                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
                             // TODO:call correct viewFlightInfo from found airports
 
@@ -323,9 +327,8 @@ public class Console {
                             String destinationCity = scanner.nextLine();
 
                             // Find airports in database from the srcCode and destCode
-                            MultiTableFct airportForCity = new MultiTableFct(conn);
-                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
-                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
                             // TODO:call correct viewFlightInfo from found airports
 
@@ -355,9 +358,8 @@ public class Console {
                             String destinationCity = scanner.next();
 
                             // Find airports in database from the srcCode and destCode
-                            MultiTableFct airportForCity = new MultiTableFct(conn);
-                            Airport sourceAirport = airportForCity.getAirportCodeForCity(sourceCity);
-                            Airport destinationAirport = airportForCity.getAirportCodeForCity(destinationCity);
+                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
                             // TODO:call correct viewFlightInfo from found airports
 

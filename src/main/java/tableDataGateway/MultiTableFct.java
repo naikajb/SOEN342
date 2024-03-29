@@ -11,7 +11,7 @@ public class MultiTableFct {
         this.conn = conn;
     }
 
-    public Airport getAirportCodeForCity(String cityName) {
+    public Airport getAirportObjectByCityName(String cityName) {
         CityDAO cityDAO = new CityDAO(conn);
         AirportDAO airportDAO = new AirportDAO(conn);
 
