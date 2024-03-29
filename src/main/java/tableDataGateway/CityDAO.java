@@ -28,26 +28,4 @@ public class CityDAO {
         }
         return null; // City not found or error occurred
     }
-
-    // Get Airport object by CityID
-    public Airport getAirportByCityId(Long cityId) {
-        String sql = "SELECT * FROM Airport WHERE CityID = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, cityId);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                Long id = rs.getLong("id");
-                String name = rs.getString("name");
-                String airportCode = rs.getString("AirportCode");
-                // Assuming the Airport constructor accepts null for the City
-                // You may need to adjust this if the Airport constructor requires a non-null
-                // City.
-                return new Airport(id, name, airportCode, null);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return null; // Airport not found or error occurred
-    }
-
 }

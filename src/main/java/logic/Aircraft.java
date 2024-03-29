@@ -9,7 +9,7 @@ public class Aircraft {
     private Locations location; // Enum: either TRANSIT or AIRPORT
     private String aircraftCode; // ex; Boing-You're-Gonna-Die
     private long airline; // in DB: airlineId
-    private long currentAirport;// in DB: airportId
+    private long currentAirport; // in DB: airportId
 
     public Aircraft(long id, Locations loc, String aircraftCode, Long airline, Long currentAirport) {
         this.id = id;

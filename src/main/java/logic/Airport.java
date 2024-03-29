@@ -7,10 +7,11 @@ public class Airport {
     private String airportCode; // like YUL
     private long location; // in DB: cityId
 
-    public Airport(String n, String code, long location) {
+    public Airport(String n, String code, long location, long id) {
         name = n;
         airportCode = code;
         this.location = location;
+        this.id = id;
     }
 
     public Long getId() {
