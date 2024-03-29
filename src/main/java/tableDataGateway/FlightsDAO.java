@@ -1,18 +1,11 @@
 package tableDataGateway;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import logic.Airport;
-import logic.Flight;
-import logic.NonPrivateFlight;
-import logic.PrivateFlight;
-import logic.FlightTypes;
+import logic.*;
 
 public class FlightsDAO {
     private Connection conn;
@@ -20,6 +13,99 @@ public class FlightsDAO {
     public FlightsDAO(Connection conn) {
         this.conn = conn;
     }
+
+    public static boolean registerPrivateFlight(Connection conn, String flightNumber, long sourceAirport, long destinationAirport,
+                                                LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
+                                                long aircraftId) {
+        try {
+            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "airportName");
+            pstmt.setString(2, flightNumber);
+            pstmt.setLong(3, sourceAirport);
+            pstmt.setLong(4, destinationAirport);
+            pstmt.setTimestamp(5, Timestamp.valueOf(scheduledDeparture));
+            pstmt.setTimestamp(6, Timestamp.valueOf(scheduledArrival));
+            pstmt.setTimestamp(7, Timestamp.valueOf(actualDeparture));
+            pstmt.setTimestamp(8, Timestamp.valueOf(estimatedArrival));
+            pstmt.setLong(9, aircraftId);
+            pstmt.setString(10, "p"); // Discriminator for private flight
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean registerNonPrivateFlight(Connection conn, String flightNumber, long sourceAirport, long destinationAirport,
+                                                   LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
+                                                   long aircraftId, FlightTypes flightType) {
+        try {
+            String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator, flightType) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "airportName");
+            pstmt.setString(2, flightNumber);
+            pstmt.setLong(3, sourceAirport);
+            pstmt.setLong(4, destinationAirport);
+            pstmt.setTimestamp(5, Timestamp.valueOf(scheduledDeparture));
+            pstmt.setTimestamp(6, Timestamp.valueOf(scheduledArrival));
+            pstmt.setTimestamp(7, Timestamp.valueOf(actualDeparture));
+            pstmt.setTimestamp(8, Timestamp.valueOf(estimatedArrival));
+            pstmt.setLong(9, aircraftId);
+            pstmt.setString(10, "np"); // Discriminator for non-private flight
+            pstmt.setString(11, flightType.toString()); // Flight type as string
+
+            int rowsInserted = pstmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+
+
+    public static ArrayList<Flight> getFlightsDepartingFromAirport(Connection conn, Long airportID) {
+        ArrayList<Flight> flights = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM Flight WHERE sourceAirport = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, airportID);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Flight flight = null;
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String flightNum = rs.getString("flightNumber");
+                Long aircraftId = (long) rs.getInt("aircraftID");
+                String type = rs.getString("Discriminator");
+                Long srcAiport = (long) rs.getInt("sourceAirport");
+                Long destAirport = (long) rs.getInt("destinationAirport");
+                LocalDateTime scheduledDepart = rs.getTimestamp("scheduleDepart").toLocalDateTime();
+                LocalDateTime scheduledArr = rs.getTimestamp("scheduleArrival").toLocalDateTime();
+                LocalDateTime actualDepart = rs.getTimestamp("actualDepart").toLocalDateTime();
+                LocalDateTime actualArr = rs.getTimestamp("actualArrival").toLocalDateTime();
+                FlightTypes flighType = FlightTypes.valueOf(rs.getString("flightType"));
+
+                if (type.equals("p")) {
+                    flight = new PrivateFlight(id, flightNum, srcAiport, destAirport, scheduledDepart, scheduledArr, actualDepart, actualArr, aircraftId);
+                } else if (type.equals("np")) {
+                    flight = new NonPrivateFlight(id, flightNum, srcAiport, destAirport, scheduledDepart, scheduledArr, actualDepart, actualArr, aircraftId, flighType);
+                }
+                
+              flights.add(flight);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return flights;
+    }
+
 
     public ArrayList<NonPrivateFlight> fetchNonPrivateFlights(long sourceAirportId, long destAirportId) {
         ArrayList<NonPrivateFlight> flights = new ArrayList<>();
@@ -55,8 +141,44 @@ public class FlightsDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return flights;
+    }
+
+    public static boolean hasFlightWithDestinationAirport(Connection conn, long destinationAirportID) {
+        boolean hasFlight = false;
+        try {
+            String sql = "SELECT COUNT(*) FROM Flight WHERE destinationAirport = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, destinationAirportID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    hasFlight = true;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return hasFlight;
+    }
+
+    public static boolean hasFlightWithScheduledArrival(Connection conn, LocalDateTime scheduledArrival) {
+        boolean hasFlight = false;
+        try {
+            String sql = "SELECT COUNT(*) FROM Flight WHERE scheduleArrival = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setTimestamp(1, Timestamp.valueOf(scheduledArrival));
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    hasFlight = true;
+                }
+              
+        return hasFlight;
     }
 
     // Same as before, but for private flights
