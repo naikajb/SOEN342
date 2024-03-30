@@ -18,3 +18,6 @@
   - github username: aloulidi
   - student id: 40210936
   - course section: GG 
+
+
+Video: https://youtu.be/BF0j7PGflg0
