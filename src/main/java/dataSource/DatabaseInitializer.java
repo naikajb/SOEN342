@@ -14,6 +14,17 @@ public class DatabaseInitializer {
         createAircraftTable(conn);
         createAirlineTable(conn);
         createFlightTable(conn);
+        updateActorDiscriminator(conn);
+    }
+
+    // Update Actor id 5 to have Discriminator R
+    public static void updateActorDiscriminator(Connection conn) {
+        String sql = "UPDATE Actors SET Discriminator = 'R' WHERE id = 5;";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void createActorsTable(Connection conn) {

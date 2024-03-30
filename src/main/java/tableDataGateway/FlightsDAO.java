@@ -18,20 +18,19 @@ public class FlightsDAO {
             LocalDateTime scheduledDeparture, LocalDateTime scheduledArrival, LocalDateTime actualDeparture,
             LocalDateTime estimatedArrival,
             long aircraftId) {
-        String sql = "INSERT INTO Flight (name, flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) "
+        String sql = "INSERT INTO Flight (flightNumber, sourceAirport, destinationAirport, scheduleDepart, scheduleArrival, actualDepart, actualArrival, aircraftID, Discriminator) "
                 +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, "airportName");
-            pstmt.setString(2, flightNumber);
-            pstmt.setLong(3, sourceAirport);
-            pstmt.setLong(4, destinationAirport);
-            pstmt.setTimestamp(5, Timestamp.valueOf(scheduledDeparture));
-            pstmt.setTimestamp(6, Timestamp.valueOf(scheduledArrival));
-            pstmt.setTimestamp(7, Timestamp.valueOf(actualDeparture));
-            pstmt.setTimestamp(8, Timestamp.valueOf(estimatedArrival));
-            pstmt.setLong(9, aircraftId);
-            pstmt.setString(10, "p"); // Discriminator for private flight
+            pstmt.setString(1, flightNumber);
+            pstmt.setLong(2, sourceAirport);
+            pstmt.setLong(3, destinationAirport);
+            pstmt.setTimestamp(4, Timestamp.valueOf(scheduledDeparture));
+            pstmt.setTimestamp(5, Timestamp.valueOf(scheduledArrival));
+            pstmt.setTimestamp(6, Timestamp.valueOf(actualDeparture));
+            pstmt.setTimestamp(7, Timestamp.valueOf(estimatedArrival));
+            pstmt.setLong(8, aircraftId);
+            pstmt.setString(9, "p"); // Discriminator for private flight
 
             int rowsInserted = pstmt.executeUpdate();
             return rowsInserted > 0;

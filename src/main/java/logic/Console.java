@@ -165,7 +165,7 @@ public class Console {
             int choice = 0; // type of action the user wants to do
 
             if (username.equals("") && password.equals("")) {
-                type += "Non-registered";
+                type += "Non-Registered";
                 System.out.println(type);
             } else {
 
@@ -442,16 +442,33 @@ public class Console {
                             case 1:
 
                                 System.out.print("Please enter the source city of the flight you'd like to view: ");
-                                scanner.nextLine();
                                 String sourceCity = scanner.nextLine();
+                                System.out.println("source city is: " + sourceCity);
+
+                                // Find airport in database from the srcCity
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+
+                                // Before proceeding, check airport is not null
+                                if (sourceAirport == null) {
+                                    System.out.println("The source airport for city " + sourceCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
+
                                 System.out
                                         .print("Please enter the destination city of the flight you'd like to view: ");
-                                scanner.nextLine();
                                 String destinationCity = scanner.nextLine();
+                                System.out.println("destination city is: " + destinationCity);
 
-                                // Find airports in database from the srcCode and destCode
-                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                                // Find airport in database from the destCity
                                 Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+
+                                // Before proceeding, check airport is not null
+                                if (destinationAirport == null) {
+                                    System.out.println("The destination airport for city " + destinationCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
                                 // Call correct viewFlightInfo from found airports
                                 System.out.println(viewBasicInfo(sourceAirport, destinationAirport, conn));
@@ -482,16 +499,33 @@ public class Console {
 
                             case 1:
                                 System.out.print("Please enter the source city of the flight you'd like to view: ");
-                                scanner.nextLine();
                                 String sourceCity = scanner.nextLine();
+                                System.out.println("source city is: " + sourceCity);
+
+                                // Find airport in database from the srcCity
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+
+                                // Before proceeding, check airport is not null
+                                if (sourceAirport == null) {
+                                    System.out.println("The source airport for city " + sourceCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
+
                                 System.out
                                         .print("Please enter the destination city of the flight you'd like to view: ");
-                                scanner.nextLine();
                                 String destinationCity = scanner.nextLine();
+                                System.out.println("destination city is: " + destinationCity);
 
-                                // Find airports in database from the srcCode and destCode
-                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                                // Find airport in database from the destCity
                                 Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+
+                                // Before proceeding, check airport is not null
+                                if (destinationAirport == null) {
+                                    System.out.println("The destination airport for city " + destinationCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
                                 // Call correct viewFlightInfo from found airports
                                 System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
@@ -662,7 +696,7 @@ public class Console {
 
                 // none were found so we can create flight and register it
                 flightDAO.registerPrivateFlight(conn, "AC 456", currentAirport.getId(), destAirport.getId(), dateTime,
-                        arrDateTime, null, null, availableAircraft.getId());
+                        arrDateTime, dateTime, arrDateTime, availableAircraft.getId());
                 return true;
             } else {
                 System.out.print("Cannot register this flight because no airport exists with this code.");
