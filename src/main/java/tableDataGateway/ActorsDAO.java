@@ -4,6 +4,7 @@ import logic.Actors;
 import logic.Airport;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,28 +16,29 @@ public class ActorsDAO {
         this.conn = conn;
     }
 
-    public String[] getUserInfo(String username, String password){
+    public String[] getUserInfo(String username, String password) {
         String[] userInfo = null;
 
-        String sql = "select  * from Actors where Username = \'" +username + "\' AND Password = \'"+password+"\';";
-        Statement statement = null;
-        ResultSet result;
-        try {
-            statement = conn.createStatement();
-             result = statement.executeQuery(sql);
-             if(result == null){
-                 System.out.println("The results are null");
-                 return null;
-             }else{
-                 userInfo = new String[4];
-                 userInfo[0] = result.getString("id");
-                 userInfo[1] = result.getString("Discriminator");
-                 userInfo[2] = result.getString("AirportID");
-                 userInfo[3] = result.getString("AirlineID");
-                 statement.close();
-                 return userInfo;
-             }
-        }catch(SQLException e){
+        String sql = "SELECT * FROM Actors WHERE Username = ? AND Password = ?;";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+
+            ResultSet result = pstmt.executeQuery();
+
+            // Check if result has at least one row
+            if (result.next()) {
+                userInfo = new String[4];
+                userInfo[0] = String.valueOf(result.getInt("id"));
+                userInfo[1] = result.getString("Discriminator");
+                userInfo[2] = String.valueOf(result.getInt("AirportID"));
+                userInfo[3] = String.valueOf(result.getInt("AirlineID"));
+                // No need to close the statement explicitly when using try-with-resources
+                return userInfo;
+            } else {
+                System.out.println("No user found with the provided username and password.");
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return null;

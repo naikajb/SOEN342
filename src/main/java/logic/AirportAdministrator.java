@@ -8,7 +8,7 @@ public class AirportAdministrator extends Administrators {
     protected String password;
     protected String actorType;
 
-    public AirportAdministrator(Long loc, String username, String password) {
+    public AirportAdministrator(long loc, String username, String password) {
         super();
         this.username = username;
         this.password = password;
