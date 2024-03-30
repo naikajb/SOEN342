@@ -200,30 +200,33 @@ public class Console {
                 case "Airport":
                     displayAdminOperations();
                     choice = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline character left after reading the integ
 
                     while (!validChoice) {
                         if (choice == 1) {
 
                             System.out.print("Please enter the source city of the flight you'd like to view: ");
-                            scanner.nextLine();
                             String sourceCity = scanner.nextLine();
-                            // System.out.println("source city is: " + sourceCity);
+                            System.out.println("source city is: " + sourceCity);
 
-                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String destinationCity = scanner.nextLine();
-
-                            // Find airports in database from the srcCode and destCode
+                            // Find airport in database from the srcCity
                             Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
-                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
-                            // Before proceeding, check that both airports are not null
+                            // Before proceeding, check airport is not null
                             if (sourceAirport == null) {
                                 System.out.println("The source airport for city " + sourceCity
                                         + " could not be found in the database.");
                                 continue;
                             }
 
+                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
+                            String destinationCity = scanner.nextLine();
+                            System.out.println("destination city is: " + destinationCity);
+
+                            // Find airport in database from the destCity
+                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+
+                            // Before proceeding, check airport is not null
                             if (destinationAirport == null) {
                                 System.out.println("The destination airport for city " + destinationCity
                                         + " could not be found in the database.");
