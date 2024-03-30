@@ -2,8 +2,10 @@ package logic;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -158,7 +160,6 @@ public class Console {
 
             if (username.equals("") && password.equals("")) {
                 type += "Non-registered";
-                System.out.println(type);
             } else {
                 // TODO:set the type depending on the username + password in the database
                 String[] info = getUserInfo(username, password, conn);
@@ -166,23 +167,19 @@ public class Console {
                     if (info[1].equals("P")) {
                         user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
                         type = "Airport";
-                        System.out.println(type);
                         System.out.println("Logged in as Airport Administrator " + username);
                     } else if (info[1].equals("L")) {
                         user = new AirlineAdministrator(username, password, Long.valueOf(info[3]));
                         type = "Airline";
                         System.out.println("Logged in as Airline Administrator " + username);
-                        System.out.println(type);
                     } else if (info[1].equals("S")) {
                         user = new SystemAdministrator(username, password);
                         type = "System";
                         System.out.println("Logged in as System Administrator " + username);
-                        System.out.println(type);
                     } else if (info[1].equals("R")) {
                         user = new Users(username, password);
                         user.registered = true;
                         type = "Registered";
-                        System.out.println(type);
                     }
                 } else {
                     System.out.println("The info are null");
@@ -240,7 +237,7 @@ public class Console {
                             validChoice = true;
 
                         } else if (choice == 2) {
-                            long airportId = user.getAirportLocation();
+                            long airportId = ((AirportAdministrator)user).getLocation();
                             AirportDAO airportDAO = new AirportDAO(conn);
                             String airportCode = airportDAO.getAirportCodeById(airportId);
                             boolean success = registerPrivateFlight(airportCode);
@@ -421,12 +418,19 @@ public class Console {
     }
 
     public static LocalDateTime convertToLocalDateTime(StringTokenizer s) {
-        return LocalDateTime.of(Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())));
+        try {
+            int year = Integer.parseInt(s.nextToken());
+            int month = Integer.parseInt(s.nextToken());
+            int day = Integer.parseInt(s.nextToken());
+            int hour = Integer.parseInt(s.nextToken());
+            int minute = Integer.parseInt(s.nextToken());
+            int second = Integer.parseInt(s.nextToken());
+            return LocalDateTime.of(year, month, day, hour, minute, second);
+        } catch (NumberFormatException | NoSuchElementException | DateTimeException e) {
+            // Handle input format errors
+            System.out.println("Invalid input format: " + e.getMessage());
+            return null;
+        }
     }
 
     private static boolean registerNonPrivateFlight(String airportCode, long airlineID) {
@@ -526,6 +530,7 @@ public class Console {
             System.out.print("Enter a date and time of departure for this flight: (yyyy-MM-dd-HH-mm-ss): ");
             StringTokenizer timeInput = new StringTokenizer(scanner.next(), "-");
             dateTime = convertToLocalDateTime(timeInput);
+            System.out.println(dateTime);
 
             // get the flights that are departing from this airport
             ArrayList<Flight> existingFlights = flightDAO.getFlightsDepartingFromAirport(currentAirport.getId());
@@ -552,8 +557,9 @@ public class Console {
 
             Airport destAirport = airportDAO.getAirportByAirportCode(destCode);
             if (destAirport != null) {
-                System.out.print("Enter the arrival time for this flight: ");
+                System.out.print("Enter the arrival date and time for this flight: ");
                 arrDateTime = convertToLocalDateTime(new StringTokenizer(scanner.next(), "-"));
+
                 // check for a flight with same destination AND arrival time
                 boolean sameDest = flightDAO.hasFlightWithDestinationAirport(destAirport.getId());
                 boolean sameTime = flightDAO.hasFlightWithScheduledArrival(arrDateTime);
@@ -567,7 +573,7 @@ public class Console {
 
                 // none were found so we can create flight and register it
                 flightDAO.registerPrivateFlight(conn, "AC 456", currentAirport.getId(), destAirport.getId(), dateTime,
-                        arrDateTime, null, null, availableAircraft.getId());
+                        arrDateTime, dateTime, arrDateTime, availableAircraft.getId());
                 return true;
             } else {
                 System.out.print("Cannot register this flight because no airport exists with this code.");

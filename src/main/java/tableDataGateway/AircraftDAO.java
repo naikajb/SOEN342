@@ -23,6 +23,7 @@ public class AircraftDAO {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, airportCode);
             ResultSet rs = pstmt.executeQuery();
+            System.out.println(airportCode);
 
             if (rs.next()) {
                 int id = rs.getInt("id");
