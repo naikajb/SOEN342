@@ -7,7 +7,7 @@ public class Aircraft {
     private long airline; // in DB: airlineId
     private long currentAirport; // in DB: airportId
 
-    public Aircraft(long id, Locations loc, String aircraftCode, Long airline, Long currentAirport) {
+    public Aircraft(long id, Locations loc, String aircraftCode, long airline, long currentAirport) {
         this.id = id;
         this.location = loc;
         this.aircraftCode = aircraftCode;

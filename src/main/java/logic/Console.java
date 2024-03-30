@@ -173,6 +173,7 @@ public class Console {
                 if (info != null) {
                     if (info[1].equals("P")) {
                         user = new AirportAdministrator(Long.valueOf(info[2]), username, password);
+                        System.out.println(Long.valueOf(info[2]));
                         type = "Airport";
                         // System.out.println(type);
                         System.out.println("Logged in as Airport Administrator " + username);
@@ -292,163 +293,216 @@ public class Console {
                     }
                     break;
                 case "Airline":
-                    displayAdminOperations();
-                    choice = scanner.nextInt();
+                    while (true) {
+                        displayAdminOperations();
+                        choice = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character left after reading the integ
 
-                    while (!validChoice) {
-                        if (choice == 1) {
-                            System.out.print("Please enter the source City of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String sourceCity = scanner.nextLine();
-                            System.out.print("Please enter the destination City of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String destinationCity = scanner.nextLine();
+                        if (choice == 3) {
+                            System.out.println("Exiting...");
+                            break; // Exit the loop, and thus, exit this case block
+                        }
 
-                            // Find airports in database from the srcCode and destCode
-                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
-                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+                        switch (choice) {
+                            case 1:
+                                System.out.print("Please enter the source city of the flight you'd like to view: ");
+                                String sourceCity = scanner.nextLine();
+                                System.out.println("source city is: " + sourceCity);
 
-                            // call correct viewFlightInfo from found airports
-                            System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
+                                // Find airport in database from the srcCity
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
 
-                            validChoice = true;
+                                // Before proceeding, check airport is not null
+                                if (sourceAirport == null) {
+                                    System.out.println("The source airport for city " + sourceCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
-                        } else if (choice == 2) {
+                                System.out
+                                        .print("Please enter the destination city of the flight you'd like to view: ");
+                                String destinationCity = scanner.nextLine();
+                                System.out.println("destination city is: " + destinationCity);
 
-                            System.out.print("Enter the source airport of the flight you'd like to register: ");
-                            String airportCode = scanner.nextLine();
-                            boolean success = registerNonPrivateFlight(airportCode,
-                                    ((AirlineAdministrator) user).getAirline());
-                            if (success) {
-                                System.out.println("New flight was successfully added.");
-                            } else {
-                                System.out.println("Flight was not added. See above error.");
-                            }
+                                // Find airport in database from the destCity
+                                Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
-                            validChoice = true;
+                                // Before proceeding, check airport is not null
+                                if (destinationAirport == null) {
+                                    System.out.println("The destination airport for city " + destinationCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
-                        } else {
+                                // call correct viewFlightInfo from found airports
+                                System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
 
-                            System.out.println("Please enter a valid choice");
+                                break;
 
+                            case 2:
+                                System.out.print("Enter the source airport of the flight you'd like to register: ");
+                                String airportCode = scanner.nextLine();
+                                boolean success = registerNonPrivateFlight(airportCode,
+                                        ((AirlineAdministrator) user).getAirline());
+                                if (success) {
+                                    System.out.println("New flight was successfully added.");
+                                } else {
+                                    System.out.println("Flight was not added. See above error.");
+                                }
+
+                                break;
+
+                            default:
+                                System.out.println("Please enter a valid choice");
                         }
                     }
-
                     break;
                 case "System":
-                    System.out.println("Which operation do you want to perform: " +
-                            "\n1. View Flight Informations" +
-                            "\n2. Enter Records on an Airport");
-                    choice = scanner.nextInt();
+                    while (true) {
+                        displayAdminOperations();
+                        choice = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character left after reading the integ
 
-                    while (!validChoice) {
-                        if (choice == 1) {
+                        if (choice == 3) {
+                            System.out.println("Exiting...");
+                            break; // Exit the loop, and thus, exit this case block
+                        }
 
-                            System.out.print("Please enter the source city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String sourceCity = scanner.nextLine();
-                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String destinationCity = scanner.nextLine();
+                        switch (choice) {
+                            case 1:
+                                System.out.print("Please enter the source city of the flight you'd like to view: ");
+                                String sourceCity = scanner.nextLine();
+                                System.out.println("source city is: " + sourceCity);
 
-                            // Find airports in database from the srcCode and destCode
-                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
-                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+                                // Find airport in database from the srcCity
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
 
-                            // Call correct viewFlightInfo from found airports
-                            System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
+                                // Before proceeding, check airport is not null
+                                if (sourceAirport == null) {
+                                    System.out.println("The source airport for city " + sourceCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
-                            validChoice = true;
+                                System.out
+                                        .print("Please enter the destination city of the flight you'd like to view: ");
+                                String destinationCity = scanner.nextLine();
+                                System.out.println("destination city is: " + destinationCity);
 
-                        } else if (choice == 2) {
-                            // Create enter record on airport method
-                            validChoice = true;
-                            System.out.print("Enter an Airport name: ");
-                            scanner.nextLine();
-                            String name = scanner.nextLine();
+                                // Find airport in database from the destCity
+                                Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
-                            System.out.print("Enter the city and country where " + name
-                                    + " is located as comma seperated values: ");
-                            // scanner.nextLine();
-                            String location = scanner.nextLine();
-                            StringTokenizer st = new StringTokenizer(location, ",");
+                                // Before proceeding, check airport is not null
+                                if (destinationAirport == null) {
+                                    System.out.println("The destination airport for city " + destinationCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
-                            addAirportRecord(name, st.nextToken(), st.nextToken(), conn);
+                                // call correct viewFlightInfo from found airports
+                                System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
 
-                        } else {
+                                break;
+                            case 2:
+                                // Create enter record on airport method
 
-                            System.out.println("Please enter a valid choice");
+                                System.out.print("Enter an Airport name: ");
+                                scanner.nextLine();
+                                String name = scanner.nextLine();
 
+                                System.out.print("Enter the city and country where " + name
+                                        + " is located as comma seperated values: ");
+                                // scanner.nextLine();
+                                String location = scanner.nextLine();
+                                StringTokenizer st = new StringTokenizer(location, ",");
+
+                                addAirportRecord(name, st.nextToken(), st.nextToken(), conn);
+
+                                break;
+
+                            default:
+                                System.out.println("Please enter a valid choice");
                         }
                     }
                     break;
                 case "Non-Registered":
-                    System.out.println("Which operation do you want to perform: " +
-                            "\n1. View Flight Informations");
-                    choice = scanner.nextInt();
+                    while (true) {
+                        System.out.println("Which operation do you want to perform: " +
+                                "\n1. View Flight Informations" +
+                                "\n2. Exit");
+                        choice = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character left after reading the integ
 
-                    while (!validChoice) {
+                        if (choice == 2) {
+                            System.out.println("Exiting...");
+                            break; // Exit the loop, and thus, exit this case block
+                        }
+                        switch (choice) {
 
-                        if (choice == 1) {
+                            case 1:
 
-                            System.out.print("Please enter the source city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String sourceCity = scanner.nextLine();
-                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String destinationCity = scanner.nextLine();
+                                System.out.print("Please enter the source city of the flight you'd like to view: ");
+                                scanner.nextLine();
+                                String sourceCity = scanner.nextLine();
+                                System.out
+                                        .print("Please enter the destination city of the flight you'd like to view: ");
+                                scanner.nextLine();
+                                String destinationCity = scanner.nextLine();
 
-                            // Find airports in database from the srcCode and destCode
-                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
-                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+                                // Find airports in database from the srcCode and destCode
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                                Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
-                            // Call correct viewFlightInfo from found airports
-                            System.out.println(viewBasicInfo(sourceAirport, destinationAirport, conn));
+                                // Call correct viewFlightInfo from found airports
+                                System.out.println(viewBasicInfo(sourceAirport, destinationAirport, conn));
 
-                            validChoice = true;
+                                break;
 
-                        } else {
+                            default:
 
-                            System.out.println("Please enter a valid choice");
+                                System.out.println("Please enter a valid choice");
 
                         }
-
                     }
                     break;
                 case "Registered":
-                    System.out.println("Which operation do you want to perform: " +
-                            "\n1. View Flight Informations");
-                    choice = scanner.nextInt();
+                    while (true) {
+                        System.out.println("Which operation do you want to perform: " +
+                                "\n1. View Flight Informations" +
+                                "\n2. Exit");
+                        choice = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character left after reading the integ
 
-                    while (!validChoice) {
-
-                        if (choice == 1) {
-
-                            System.out.print("Please enter the source city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String sourceCity = scanner.next();
-                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
-                            scanner.nextLine();
-                            String destinationCity = scanner.next();
-
-                            // Find airports in database from the srcCode and destCode
-                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
-                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
-
-                            // Call correct viewFlightInfo from found airports
-                            System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
-
-                            System.out.println("fhsdvhjd");
-                            validChoice = true;
-
-                        } else {
-
-                            System.out.println("Please enter a valid choice");
-
+                        if (choice == 2) {
+                            System.out.println("Exiting...");
+                            break; // Exit the loop, and thus, exit this case block
                         }
 
-                    }
+                        switch (choice) {
 
+                            case 1:
+                                System.out.print("Please enter the source city of the flight you'd like to view: ");
+                                scanner.nextLine();
+                                String sourceCity = scanner.nextLine();
+                                System.out
+                                        .print("Please enter the destination city of the flight you'd like to view: ");
+                                scanner.nextLine();
+                                String destinationCity = scanner.nextLine();
+
+                                // Find airports in database from the srcCode and destCode
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                                Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
+
+                                // Call correct viewFlightInfo from found airports
+                                System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
+
+                                break;
+
+                            default:
+                                System.out.println("Please enter a valid choice");
+
+                        }
+                    }
                     break;
             }
         }

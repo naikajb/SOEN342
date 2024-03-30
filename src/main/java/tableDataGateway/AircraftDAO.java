@@ -28,8 +28,8 @@ public class AircraftDAO {
                 int id = rs.getInt("id");
                 Locations location = Locations.valueOf(rs.getString("location"));
                 String aircraftCode = rs.getString("aircraftCode");
-                Long airlineID = (long) rs.getInt("airlineID");
-                Long airportID = (long) rs.getInt("airportID");
+                long airlineID = (long) rs.getInt("airlineID");
+                long airportID = (long) rs.getInt("airportID");
                 aircraft = new Aircraft(id, location, aircraftCode, airlineID, airportID);
 
             }
