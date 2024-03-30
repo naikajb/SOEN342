@@ -44,14 +44,13 @@ public class Console {
                 destination.getId());
 
         if (flights.isEmpty()) {
-            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".\n";
         }
 
         for (NonPrivateFlight flight : flights) {
-            info.append("Flight Number: ").append(flight.getFlightNumber())
-                    .append(", Source: ").append(source.getName())
-                    .append(", Destination: ").append(destination.getName())
-                    .append("\n");
+            info.append("Flight Number: ").append(flight.getFlightNumber()).append("\n")
+                    .append("Source: ").append(source.getName()).append("\n")
+                    .append("Destination: ").append(destination.getName()).append("\n\n");
         }
 
         return info.toString();
@@ -71,7 +70,7 @@ public class Console {
                 destination.getId());
 
         if (flights.isEmpty()) {
-            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".\n";
         }
 
         for (NonPrivateFlight flight : flights) {
@@ -80,19 +79,19 @@ public class Console {
             long airlineId = aircraftInfo.getAirlineIdByAircraftId(flight.getAircraftId());
             String airlineName = airlineInfo.getAirlineNameByAirlineId(airlineId);
 
-            info.append("Flight Number: ").append(flight.getFlightNumber())
-                    .append(", Airline: ").append(airlineName)
-                    .append(", Aircraft: ").append(aircraftCode)
-                    .append(", Flight Type: ").append(flight.getFlightType().toString())
-                    .append(", Source: ").append(source.getName())
-                    .append(", Destination: ").append(destination.getName())
-                    .append(", Scheduled Departure: ").append(flight.getScheduledDeparture().toString())
-                    .append(", Actual Departure: ")
+            info.append("Flight Number: ").append(flight.getFlightNumber()).append("\n")
+                    .append("Airline: ").append(airlineName).append("\n")
+                    .append("Aircraft: ").append(aircraftCode).append("\n")
+                    .append("Flight Type: ").append(flight.getFlightType().toString()).append("\n")
+                    .append("Source: ").append(source.getName()).append("\n")
+                    .append("Destination: ").append(destination.getName()).append("\n")
+                    .append("Scheduled Departure: ").append(flight.getScheduledDeparture().toString()).append("\n")
+                    .append("Actual Departure: ")
                     .append(flight.getActualDeparture() != null ? flight.getActualDeparture().toString()
                             : "HAS NOT DEPARTED YET")
-                    .append(", Scheduled Arrival: ").append(flight.getScheduledArrival().toString())
-                    .append(", Estimated Arrival: ").append(flight.getEstimatedArrival().toString())
-                    .append("\n");
+                    .append("\n")
+                    .append("Scheduled Arrival: ").append(flight.getScheduledArrival().toString()).append("\n")
+                    .append("Estimated Arrival: ").append(flight.getEstimatedArrival().toString()).append("\n\n");
         }
 
         return info.toString();
@@ -107,7 +106,7 @@ public class Console {
         ArrayList<PrivateFlight> flights = fullFlightInfo.fetchPrivateFlights(source.getId(), destination.getId());
 
         if (flights.isEmpty()) {
-            return "No non-private flights found from " + source.getName() + " to " + destination.getName() + ".";
+            return "No private flights found from " + source.getName() + " to " + destination.getName() + ".\n";
         }
 
         for (PrivateFlight flight : flights) {
@@ -116,18 +115,24 @@ public class Console {
             long airlineId = aircraftInfo.getAirlineIdByAircraftId(flight.getAircraftId());
             String airlineName = airlineInfo.getAirlineNameByAirlineId(airlineId);
 
-            info.append("Flight Number: ").append(flight.getFlightNumber())
-                    .append(", Airline: ").append(airlineName)
-                    .append(", Aircraft: ").append(aircraftCode)
-                    .append(", Source: ").append(source.getName())
-                    .append(", Destination: ").append(destination.getName())
-                    .append(", Scheduled Departure: ").append(flight.getScheduledDeparture().toString())
-                    .append(", Actual Departure: ")
+            info.append("Flight Number: ").append(flight.getFlightNumber()).append("\n")
+                    .append("Airline: ").append(airlineName).append("\n")
+                    .append("Aircraft: ").append(aircraftCode).append("\n")
+                    .append("Source: ").append(source.getName()).append("\n")
+                    .append("Destination: ").append(destination.getName()).append("\n")
+                    .append("Scheduled Departure: ")
+                    .append(flight.getScheduledDeparture() != null ? flight.getScheduledDeparture().toString() : "N/A")
+                    .append("\n")
+                    .append("Actual Departure: ")
                     .append(flight.getActualDeparture() != null ? flight.getActualDeparture().toString()
                             : "HAS NOT DEPARTED YET")
-                    .append(", Scheduled Arrival: ").append(flight.getScheduledArrival().toString())
-                    .append(", Estimated Arrival: ").append(flight.getEstimatedArrival().toString())
-                    .append("\n");
+                    .append("\n")
+                    .append("Scheduled Arrival: ")
+                    .append(flight.getScheduledArrival() != null ? flight.getScheduledArrival().toString() : "N/A")
+                    .append("\n")
+                    .append("Estimated Arrival: ")
+                    .append(flight.getEstimatedArrival() != null ? flight.getEstimatedArrival().toString() : "N/A")
+                    .append("\n\n");
         }
 
         return info.toString();
