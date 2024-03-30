@@ -154,10 +154,10 @@ public class Console {
 
         while (!valid) {
             System.out.print("Please enter your username: ");
-            String username = scanner.next();
-            scanner.nextLine();
+            String username = scanner.nextLine();
+
             System.out.print("Please enter your password: ");
-            String password = scanner.next();
+            String password = scanner.nextLine();
 
             String type = ""; // depending on the type of user, different actions can be done
             boolean validChoice = false;
@@ -274,7 +274,7 @@ public class Console {
                                 break;
 
                             case 2:
-                                long airportId = ((AirportAdministrator) user).getAirportLocation();
+                                long airportId = ((AirportAdministrator) user).getLocation();
                                 AirportDAO airportDAO = new AirportDAO(conn);
                                 String airportCode = airportDAO.getAirportCodeById(airportId);
                                 boolean success = registerPrivateFlight(airportCode, conn);
