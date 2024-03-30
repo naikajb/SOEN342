@@ -2,8 +2,10 @@ package logic;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -454,12 +456,19 @@ public class Console {
     }
 
     public static LocalDateTime convertToLocalDateTime(StringTokenizer s) {
-        return LocalDateTime.of(Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())),
-                Integer.parseInt(String.valueOf(s.nextToken())));
+        try {
+            int year = Integer.parseInt(s.nextToken());
+            int month = Integer.parseInt(s.nextToken());
+            int day = Integer.parseInt(s.nextToken());
+            int hour = Integer.parseInt(s.nextToken());
+            int minute = Integer.parseInt(s.nextToken());
+            int second = Integer.parseInt(s.nextToken());
+            return LocalDateTime.of(year, month, day, hour, minute, second);
+        } catch (NumberFormatException | NoSuchElementException | DateTimeException e) {
+            // Handle input format errors
+            System.out.println("Invalid input format: " + e.getMessage());
+            return null;
+        }
     }
 
     private static boolean registerNonPrivateFlight(String airportCode, long airlineID) {
