@@ -276,7 +276,7 @@ public class Console {
                                 long airportId = ((AirportAdministrator) user).getAirportLocation();
                                 AirportDAO airportDAO = new AirportDAO(conn);
                                 String airportCode = airportDAO.getAirportCodeById(airportId);
-                                boolean success = registerPrivateFlight(airportCode);
+                                boolean success = registerPrivateFlight(airportCode, conn);
 
                                 if (success) {
                                     System.out.println("New flight was successfully added.");
@@ -548,8 +548,7 @@ public class Console {
         }
     }
 
-    private static boolean registerPrivateFlight(String airportCode) {
-        Connection conn = DatabaseConnector.connect();
+    private static boolean registerPrivateFlight(String airportCode, Connection conn) {
         AirportDAO airportDAO = new AirportDAO(conn);
         AircraftDAO aircraftDAO = new AircraftDAO(conn);
         FlightsDAO flightDAO = new FlightsDAO(conn);
