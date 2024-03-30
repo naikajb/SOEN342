@@ -198,93 +198,96 @@ public class Console {
 
             switch (type) {
                 case "Airport":
-                    displayAdminOperations();
-                    choice = scanner.nextInt();
-                    scanner.nextLine(); // Consume the newline character left after reading the integ
+                    while (true) {
+                        displayAdminOperations();
+                        choice = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character left after reading the integ
 
-                    while (!validChoice) {
-                        if (choice == 1) {
+                        if (choice == 3) {
+                            System.out.println("Exiting...");
+                            break; // Exit the loop, and thus, exit this case block
+                        }
 
-                            System.out.print("Please enter the source city of the flight you'd like to view: ");
-                            String sourceCity = scanner.nextLine();
-                            System.out.println("source city is: " + sourceCity);
+                        switch (choice) {
+                            case 1:
 
-                            // Find airport in database from the srcCity
-                            Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
+                                System.out.print("Please enter the source city of the flight you'd like to view: ");
+                                String sourceCity = scanner.nextLine();
+                                System.out.println("source city is: " + sourceCity);
 
-                            // Before proceeding, check airport is not null
-                            if (sourceAirport == null) {
-                                System.out.println("The source airport for city " + sourceCity
-                                        + " could not be found in the database.");
-                                continue;
-                            }
+                                // Find airport in database from the srcCity
+                                Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
 
-                            System.out.print("Please enter the destination city of the flight you'd like to view: ");
-                            String destinationCity = scanner.nextLine();
-                            System.out.println("destination city is: " + destinationCity);
-
-                            // Find airport in database from the destCity
-                            Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
-
-                            // Before proceeding, check airport is not null
-                            if (destinationAirport == null) {
-                                System.out.println("The destination airport for city " + destinationCity
-                                        + " could not be found in the database.");
-                                validChoice = false;
-                                continue;
-                            }
-
-                            // call correct viewFlightInfo from found airports
-                            System.out.println(
-                                    "Please enter if you'd like to see a Private Flight (P) or a non-private Flight NP): ");
-                            String wantPrivate = scanner.next();
-
-                            while (!validChoice2) {
-                                if (wantPrivate.equals("P")) {
-                                    // Establish value of airport of user
-                                    long userAirport = user.getAirportLocation();
-                                    // Check if it is equal to source OR destination airport
-                                    if (userAirport == sourceAirport.getId()
-                                            || userAirport == destinationAirport.getId()) {
-                                        System.out.println(viewPrivateInfo(sourceAirport, destinationAirport, conn));
-                                    } else {
-                                        System.out.println(
-                                                "You do not have access to this information since you are not in the airport of the Private Flight that you want to get the info of.");
-                                    }
-                                    validChoice2 = true;
-
-                                } else if (wantPrivate.equals("NP")) {
-                                    System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
-                                    validChoice2 = true;
-                                } else {
-                                    System.out.println("Please enter a valid choice");
-                                    validChoice2 = false;
+                                // Before proceeding, check airport is not null
+                                if (sourceAirport == null) {
+                                    System.out.println("The source airport for city " + sourceCity
+                                            + " could not be found in the database.");
+                                    continue;
                                 }
-                            }
 
-                            validChoice = true;
+                                System.out
+                                        .print("Please enter the destination city of the flight you'd like to view: ");
+                                String destinationCity = scanner.nextLine();
+                                System.out.println("destination city is: " + destinationCity);
 
-                        } else if (choice == 2) {
-                            long airportId = user.getAirportLocation();
-                            AirportDAO airportDAO = new AirportDAO(conn);
-                            String airportCode = airportDAO.getAirportCodeById(airportId);
-                            boolean success = registerPrivateFlight(airportCode);
+                                // Find airport in database from the destCity
+                                Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
-                            if (success) {
-                                System.out.println("New flight was successfully added.");
-                            } else {
-                                System.out.println("Flight was not added. See above error.");
-                            }
+                                // Before proceeding, check airport is not null
+                                if (destinationAirport == null) {
+                                    System.out.println("The destination airport for city " + destinationCity
+                                            + " could not be found in the database.");
+                                    continue;
+                                }
 
-                            validChoice = true;
+                                // call correct viewFlightInfo from found airports
+                                System.out.println(
+                                        "Please enter if you'd like to see a Private Flight (P) or a non-private Flight NP): ");
+                                String wantPrivate = scanner.next();
 
-                        } else {
+                                while (!validChoice2) {
+                                    if (wantPrivate.equals("P")) {
+                                        // Establish value of airport of user
+                                        long userAirport = user.getAirportLocation();
+                                        // Check if it is equal to source OR destination airport
+                                        if (userAirport == sourceAirport.getId()
+                                                || userAirport == destinationAirport.getId()) {
+                                            System.out
+                                                    .println(viewPrivateInfo(sourceAirport, destinationAirport, conn));
+                                        } else {
+                                            System.out.println(
+                                                    "You do not have access to this information since you are not in the airport of the Private Flight that you want to get the info of.");
+                                        }
+                                        validChoice2 = true;
 
-                            System.out.println("Please enter a valid choice");
+                                    } else if (wantPrivate.equals("NP")) {
+                                        System.out.println(viewFullInfo(sourceAirport, destinationAirport, conn));
+                                        validChoice2 = true;
+                                    } else {
+                                        System.out.println("Please enter a valid choice");
+                                        validChoice2 = false;
+                                    }
+                                }
+                                break;
 
+                            case 2:
+                                long airportId = user.getAirportLocation();
+                                AirportDAO airportDAO = new AirportDAO(conn);
+                                String airportCode = airportDAO.getAirportCodeById(airportId);
+                                boolean success = registerPrivateFlight(airportCode);
+
+                                if (success) {
+                                    System.out.println("New flight was successfully added.");
+                                } else {
+                                    System.out.println("Flight was not added. See above error.");
+                                }
+
+                                break;
+
+                            default:
+                                System.out.println("Please enter a valid choice");
                         }
                     }
-
                     break;
                 case "Airline":
                     displayAdminOperations();
@@ -447,6 +450,7 @@ public class Console {
                     break;
             }
         }
+
     }
 
     public static LocalDateTime convertToLocalDateTime(StringTokenizer s) {
@@ -610,7 +614,8 @@ public class Console {
     private static void displayAdminOperations() {
         System.out.println("Which operation do you want to perform: " +
                 "\n1. View Flight Informations" +
-                "\n2. Register a New Flight");
+                "\n2. Register a New Flight" +
+                "\n3. Exit");
     }
 
     private static void addAirportRecord(String name, String city, String Country, Connection connection) {
