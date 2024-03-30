@@ -22,7 +22,7 @@ public class AirlineDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("id");
+                return rs.getString("name");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

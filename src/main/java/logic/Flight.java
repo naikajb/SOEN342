@@ -19,6 +19,7 @@ public abstract class Flight {
             LocalDateTime scheduledArrival, LocalDateTime actualDeparture, LocalDateTime estimatedArrival,
             long aircraftId) {
         this.id = id;
+        this.flightNumber = flightNumber;
         this.sourceAirport = sourceAirport;
         this.destinationAirport = destinationAirport;
         this.scheduledDeparture = scheduledDeparture;
