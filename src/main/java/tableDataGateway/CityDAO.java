@@ -9,24 +9,23 @@ public class CityDAO {
         this.conn = conn;
     }
 
-
-    public long getCityID(String cityName){
+    public long getCityID(String cityName) {
         long id = -1;
-        String sql = "select  * from City where name = \'" +cityName + "\';";
+        String sql = "select  * from City where name = \'" + cityName + "\';";
 
         Statement s = null;
         ResultSet result;
 
-        try{
+        try {
             s = conn.createStatement();
             result = s.executeQuery(sql);
 
-            if(result != null){
+            if (result != null) {
                 id = result.getLong("id");
-                //System.out.println("City " + cityName + " found in database with id " + id);
+                // System.out.println("City " + cityName + " found in database with id " + id);
             }
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
@@ -35,9 +34,10 @@ public class CityDAO {
 
     // Get CityID by given City Name
     public long getCityIdByName(String cityName) {
-        String sql = "SELECT id FROM City WHERE name = \'" + cityName + "\';";
+        // Use a placeholder (?) for the parameter in the query
+        String sql = "SELECT id FROM City WHERE name = ?;";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, cityName);
+            pstmt.setString(1, cityName); // Set the first parameter to cityName
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return rs.getLong("id");
@@ -55,7 +55,7 @@ public class CityDAO {
 
         PreparedStatement statement = null;
         ResultSet result = null;
-        try{
+        try {
             sql = "INSERT INTO City (name, Country, Temperature) VALUES (?, ?, ?)";
             statement = conn.prepareStatement(sql);
 
@@ -70,7 +70,7 @@ public class CityDAO {
             if (result.next()) {
                 id = result.getInt(1);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
