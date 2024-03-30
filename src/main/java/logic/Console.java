@@ -204,6 +204,7 @@ public class Console {
 
                             System.out.println("Please enter the destination city of the flight you'd like to view: ");
                             String destinationCity = scanner.next();
+                            System.out.println("destination city is: " + destinationCity);
 
                             // Find airports in database from the srcCode and destCode
                             Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
