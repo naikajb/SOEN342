@@ -210,6 +210,20 @@ public class Console {
                             Airport sourceAirport = getAirportObjectByCityName(sourceCity, conn);
                             Airport destinationAirport = getAirportObjectByCityName(destinationCity, conn);
 
+                            // Before proceeding, check that both airports are not null
+                            if (sourceAirport == null) {
+                                System.out.println("The source airport for city " + sourceCity
+                                        + " could not be found in the database.");
+                                continue;
+                            }
+
+                            if (destinationAirport == null) {
+                                System.out.println("The destination airport for city " + destinationCity
+                                        + " could not be found in the database.");
+                                validChoice = false;
+                                continue;
+                            }
+
                             // call correct viewFlightInfo from found airports
                             System.out.println(
                                     "Please enter if you'd like to see a Private Flight (P) or a non-private Flight NP): ");
