@@ -190,7 +190,7 @@ public class Console {
                         user = new Users(username, password);
                         user.registered = true;
                         type = "Registered";
-                        // System.out.println(type);
+                        // Systsem.out.println(type);
                     }
                 } else {
                     System.out.println("The info are null");
@@ -273,7 +273,7 @@ public class Console {
                                 break;
 
                             case 2:
-                                long airportId = user.getAirportLocation();
+                                long airportId = ((AirportAdministrator) user).getAirportLocation();
                                 AirportDAO airportDAO = new AirportDAO(conn);
                                 String airportCode = airportDAO.getAirportCodeById(airportId);
                                 boolean success = registerPrivateFlight(airportCode);
